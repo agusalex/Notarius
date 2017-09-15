@@ -116,7 +116,11 @@ import com.vaadin.v7.ui.TextField;
     }
 
     private void delete(Button.ClickEvent event) {
-
+            if(contact==null||contact.getId()==null){
+                String msg = String.format("No es posible eliminar");
+                Notification.show(msg, Type.TRAY_NOTIFICATION);
+                return;
+            }
             getAddressbookView().service.delete(contact);
 
             String msg = String.format("Eliminado '%s %s'.", contact.getFirstName(),

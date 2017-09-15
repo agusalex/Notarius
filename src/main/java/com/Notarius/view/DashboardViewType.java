@@ -9,7 +9,7 @@ import com.vaadin.server.Resource;
 
 public enum DashboardViewType {
     INICIO("Inicio", DashboardView.class, FontAwesome.HOME, true),CONTACTOS(
-            "Contactos", AddressbookView.class, FontAwesome.CALENDAR_O, false) ;
+            "Contactos", AddressbookView.class, FontAwesome.USERS, false) ;
 
     private final String viewName;
     private final Class<? extends View> viewClass;
