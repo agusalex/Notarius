@@ -42,7 +42,9 @@ public class AddressbookView extends VerticalLayout implements View {
      */
     TextField filter = new TextField();
     Grid contactList = new Grid();
-    Button newContact = new Button("New contact");
+    Button newContact = new Button("Nuevo");
+
+
 
     // ContactForm is an example of a custom component class
     ContactForm contactForm = new ContactForm(this);
@@ -63,6 +65,9 @@ public class AddressbookView extends VerticalLayout implements View {
         super();
         configureComponents();
         buildLayout();
+        setMargin(true);
+        newContact.setStyleName(ValoTheme.BUTTON_PRIMARY);
+
         DashboardEventBus.register(this);
         TabSheet tabs = new TabSheet();
         setSizeFull();
@@ -88,17 +93,20 @@ public class AddressbookView extends VerticalLayout implements View {
          */
         newContact.addClickListener(e -> contactForm.edit(new PersonaDTO()));
 
-        filter.setInputPrompt("Filter contacts...");
+        filter.setInputPrompt("Filtrar...");
         filter.addTextChangeListener(e -> refreshContacts(e.getText()));
 
         contactList
                 .setContainerDataSource(new BeanItemContainer<>(PersonaDTO.class));
-        contactList.setColumnOrder("firstName", "lastName", "email");
+
+        contactList.removeAllColumns();
+        contactList.addColumn("firstName");
+        contactList.addColumn("lastName");
+        contactList.addColumn("DNI");
         contactList.getColumn("firstName").setHeaderCaption("Nombre");
         contactList.getColumn("lastName").setHeaderCaption("Apellido");
-       // contactList.removeColumn("id");
-        contactList.removeColumn("birthDate");
-        contactList.removeColumn("phone");
+        contactList.getColumn("DNI").setHeaderCaption("DNI");
+        contactList.setColumnOrder("firstName", "lastName", "DNI");
         contactList.setSelectionMode(Grid.SelectionMode.SINGLE);
         contactList.addSelectionListener(
                 e -> contactForm.edit((PersonaDTO) contactList.getSelectedRow()));

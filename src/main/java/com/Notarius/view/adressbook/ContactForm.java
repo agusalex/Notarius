@@ -1,10 +1,7 @@
 package com.Notarius.view.adressbook;
 import com.Notarius.data.dto.PersonaDTO;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.v7.data.fieldgroup.BeanFieldGroup;
@@ -29,11 +26,13 @@ import com.vaadin.v7.ui.TextField;
 
 
 
-    TextField firstName = new TextField("Nombre");
+         TextField firstName = new TextField("Nombre");
         TextField lastName = new TextField("Apellido");
+        TextField dni = new TextField("DNI");
         TextField phone = new TextField("Celular");
         TextField email = new TextField("Mail");
         DateField birthDate = new DateField("F.de Nac");
+
         AddressbookView addressbookView;
 
         PersonaDTO contact;
@@ -45,6 +44,7 @@ import com.vaadin.v7.ui.TextField;
         addressbookView=addressbook;
         configureComponents();
         buildLayout();
+        delete.setStyleName(ValoTheme.BUTTON_DANGER);
     }
 
     private void configureComponents() {
@@ -62,12 +62,20 @@ import com.vaadin.v7.ui.TextField;
     private void buildLayout() {
         setSizeUndefined();
         setMargin(true);
-
+        TabSheet tabSheet=new TabSheet();
         HorizontalLayout actions = new HorizontalLayout(save, cancel);
+        addComponent(actions);
         actions.setSpacing(true);
+        VerticalLayout principal=new VerticalLayout( firstName, lastName, dni, birthDate);
+        VerticalLayout contacto=new VerticalLayout( email,phone);
 
-        addComponents(actions, firstName, lastName, phone, email, birthDate);
-        addComponent(delete);
+         tabSheet.addTab(principal,"Principal");
+        tabSheet.addTab(contacto,"Contacto");
+
+         addComponent(tabSheet);
+
+         addComponent(delete);
+
     }
 
     /*
@@ -96,12 +104,15 @@ import com.vaadin.v7.ui.TextField;
         } catch (FieldGroup.CommitException e) {
             // Validation exceptions could be shown here
         }
+        getAddressbookView().newContact.setVisible(true);
     }
 
     public void cancel(Button.ClickEvent event) {
         // Place to call business logic.
         Notification.show("Cancelado", Type.TRAY_NOTIFICATION);
         getAddressbookView().contactList.select(null);
+        setVisible(false);
+        getAddressbookView().newContact.setVisible(true);
     }
 
     private void delete(Button.ClickEvent event) {
@@ -112,6 +123,7 @@ import com.vaadin.v7.ui.TextField;
                     contact.getLastName());
             Notification.show(msg, Type.TRAY_NOTIFICATION);
             getAddressbookView().refreshContacts();
+        getAddressbookView().newContact.setVisible(true);
 
     }
 
@@ -122,8 +134,11 @@ import com.vaadin.v7.ui.TextField;
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(contact,
                     this);
             firstName.focus();
+
         }
         setVisible(contact != null);
+        getAddressbookView().newContact.setVisible(contact == null);
+
     }
 
     public AddressbookView getAddressbookView() {

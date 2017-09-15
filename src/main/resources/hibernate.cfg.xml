@@ -26,6 +26,8 @@
 
 		<!-- Names the annotated entity class -->
 		<mapping class="com.Notarius.data.dto.PersonaDTO" />
+		<mapping class="com.Notarius.data.dto.DomicilioDTO" />
+
 
 	</session-factory>
 

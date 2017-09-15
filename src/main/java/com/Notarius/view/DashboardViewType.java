@@ -8,7 +8,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 
 public enum DashboardViewType {
-    DASHBOARD("dashboard", DashboardView.class, FontAwesome.HOME, true),CONTACTOS(
+    INICIO("Inicio", DashboardView.class, FontAwesome.HOME, true),CONTACTOS(
             "Contactos", AddressbookView.class, FontAwesome.CALENDAR_O, false) ;
 
     private final String viewName;

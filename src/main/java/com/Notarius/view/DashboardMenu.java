@@ -63,7 +63,7 @@ public final class DashboardMenu extends CustomComponent {
     }
 
     private Component buildTitle() {
-        Label logo = new Label("Notarius <strong>Dashboard</strong>",
+        Label logo = new Label("Sistema <strong>Notarius</strong>",
                 ContentMode.HTML);
         logo.setSizeUndefined();
         HorizontalLayout logoWrapper = new HorizontalLayout(logo);
@@ -135,7 +135,7 @@ public final class DashboardMenu extends CustomComponent {
 
 
 
-            if (view == DashboardViewType.DASHBOARD) {
+            if (view == DashboardViewType.INICIO) {
                 notificationsBadge = new Label();
                 notificationsBadge.setId(NOTIFICATIONS_BADGE_ID);
                 menuItemComponent = buildBadgeWrapper(menuItemComponent,

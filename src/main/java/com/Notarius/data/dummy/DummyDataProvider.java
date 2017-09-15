@@ -66,32 +66,14 @@ public class DummyDataProvider implements DataProvider {
         return jobject;
     }
 
-    /**
-     * =========================================================================
-     * Countries, cities, theaters and rooms
-     * =========================================================================
-     */
 
-
-    /**
-     * Create a list of dummy transactions
-     *
-     * @return
-     */
   
     @Override
     public User authenticate(String userName, String password) {
         User user = new User();
-        user.setFirstName(DummyDataGenerator.randomFirstName());
-        user.setLastName(DummyDataGenerator.randomLastName());
+        user.setFirstName("Usuario");
+        user.setLastName("");
         user.setRole("admin");
-        String email = user.getFirstName().toLowerCase() + "."
-                + user.getLastName().toLowerCase() + "@"
-                + DummyDataGenerator.randomCompanyName().toLowerCase() + ".com";
-        user.setEmail(email.replaceAll(" ", ""));
-        user.setLocation(DummyDataGenerator.randomWord(5, true));
-        user.setBio("Quis aute iure reprehenderit in voluptate velit esse."
-                + "Cras mattis iudicium purus sit amet fermentum.");
         return user;
     }
 

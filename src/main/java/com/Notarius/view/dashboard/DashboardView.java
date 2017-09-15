@@ -72,7 +72,7 @@ public final class DashboardView extends Panel implements View{
         HorizontalLayout header = new HorizontalLayout();
         header.addStyleName("viewheader");
 
-        titleLabel = new Label("Dashboard");
+        titleLabel = new Label("Inicio");
         titleLabel.setId(TITLE_ID);
         titleLabel.setSizeUndefined();
         titleLabel.addStyleName(ValoTheme.LABEL_H1);

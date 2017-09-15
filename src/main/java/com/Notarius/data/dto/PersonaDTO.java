@@ -17,7 +17,7 @@ import java.util.Date;
 // Backend DTO class. This is just a typical Java backend implementation
 // class and nothing Vaadin specific.
 @Entity
-@Table(name = "personas")
+@Table(name = "people")
 public class PersonaDTO implements Serializable, Cloneable,Identificable {
 
     @Id
@@ -25,20 +25,108 @@ public class PersonaDTO implements Serializable, Cloneable,Identificable {
     @Column(name = "idPersona")
     private Long id;
 
-    @Column(name = "nombre")
+    @Column(name = "firstName")
     private String firstName="";
 
-    @Column(name = "apellido")
+    @Column(name = "lastName")
     private String lastName="";
 
-    @Column(name = "telefono")
+    @Column(name = "phone")
     private String phone="";
 
     @Column(name = "email")
     private String email="";
 
-    @Column(name = "nacimiento")
+    @Column(name = "birthDate")
     private Date birthDate;
+
+    @Column(name = "fathersName")
+    private String fathersName="";
+
+    @Column(name = "countryofOrigin")
+    private String countryofOrigin="";
+
+    @Column(name = "info")
+    private String info="";
+
+    @Column(name = "mothersName")
+    private String mothersName="";
+
+    @Column(name = "dni")
+    private String DNI ="";
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idDomicilio")
+    private DomicilioDTO domicilio;
+
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sex")
+    private Sexo sex;
+
+    public String getFathersName() {
+        return fathersName;
+    }
+
+    public void setFathersName(String fathersName) {
+        this.fathersName = fathersName;
+    }
+
+    public String getCountryofOrigin() {
+        return countryofOrigin;
+    }
+
+    public void setCountryofOrigin(String countryofOrigin) {
+        this.countryofOrigin = countryofOrigin;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public String getMothersName() {
+        return mothersName;
+    }
+
+    public void setMothersName(String mothersName) {
+        this.mothersName = mothersName;
+    }
+
+    public String getDNI() {
+        return DNI;
+    }
+
+    public void setDNI(String DNI) {
+        this.DNI = DNI;
+    }
+
+    public DomicilioDTO getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(DomicilioDTO domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public Sexo getSex() {
+        return sex;
+    }
+
+    public void setSex(Sexo sex) {
+        this.sex = sex;
+    }
+
+
+
+    public enum Sexo{
+        Masculino, Femenino
+    }
+
 
  /*   @Enumerated(EnumType.STRING)
     @Column(name = "mascotaPreferida")

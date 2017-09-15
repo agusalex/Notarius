@@ -20,7 +20,7 @@ public class DashboardNavigator extends Navigator {
     private static final String TRACKER_ID = null;// "UA-658457-6";
     private GoogleAnalyticsTracker tracker;
 
-    private static final DashboardViewType ERROR_VIEW = DashboardViewType.DASHBOARD;
+    private static final DashboardViewType ERROR_VIEW = DashboardViewType.INICIO;
     private ViewProvider errorViewProvider;
 
     public DashboardNavigator(final ComponentContainer container) {
