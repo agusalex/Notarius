@@ -25,7 +25,7 @@ import java.util.Locale;
 
 @Theme("dashboard")
 @Widgetset("com.Notarius.DashboardWidgetSet")
-@Title("QuickTickets Dashboard")
+@Title("Notarius")
 @SuppressWarnings("serial")
 public final class DashboardUI extends UI {
 

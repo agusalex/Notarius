@@ -7,6 +7,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * A simple DTO for the address book example.
@@ -31,46 +32,60 @@ public class PersonaDTO implements Serializable, Cloneable,Identificable {
     @Column(name = "lastName")
     private String lastName="";
 
+    @Column(name = "dni")
+    private String DNI ="";
+
+    @Column(name = "cuitl")
+    private String cuitl ="";
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sex")
+    private Sex sex;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "maritalStatus")
+    private MaritalStatus maritalStatus;
+
     @Column(name = "phone")
     private String phone="";
+
+    @Column(name = "mobilePhone")
+    private String mobilePhone="";
 
     @Column(name = "email")
     private String email="";
 
-    @Column(name = "birthDate")
-    private Date birthDate;
+    public String getCuitl() {
 
-    @Column(name = "fathersName")
-    private String fathersName="";
-
-    @Column(name = "countryofOrigin")
-    private String countryofOrigin="";
-
-    @Column(name = "info")
-    private String info="";
-
-    @Column(name = "mothersName")
-    private String mothersName="";
-
-    @Column(name = "dni")
-    private String DNI ="";
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idDomicilio")
-    private DomicilioDTO domicilio;
-
-
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "sex")
-    private Sexo sex;
-
-    public String getFathersName() {
-        return fathersName;
+        return cuitl;
     }
 
-    public void setFathersName(String fathersName) {
-        this.fathersName = fathersName;
+    public void setCuitl(String cuitl) {
+        this.cuitl = cuitl;
+    }
+
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
     }
 
     public String getCountryofOrigin() {
@@ -80,6 +95,118 @@ public class PersonaDTO implements Serializable, Cloneable,Identificable {
     public void setCountryofOrigin(String countryofOrigin) {
         this.countryofOrigin = countryofOrigin;
     }
+
+    @Column(name = "birthDate")
+    private Date birthDate;
+
+    @Column(name = "fathersName")
+    private String fathersName="";
+
+    @Column(name = "mothersName")
+    private String mothersName="";
+
+    @Column(name = "info")
+    private String info="";
+
+    @Column(name = "countryofOrigin")
+    private String countryofOrigin="";
+
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idDomicilio")
+    private DomicilioDTO domicilio;
+
+
+
+
+    public enum MaritalStatus {
+        CASADO,DIVORCIADO,SOLTERO,VIUDO;
+        @Override
+        public String toString(){
+
+
+            switch (this) {
+                case CASADO:  return "Casado";
+                case SOLTERO: return "Soltero";
+                case DIVORCIADO: return "Divorciado";
+                case VIUDO:  return "Viudo";
+
+            }
+
+            return "";
+
+        }
+
+        public static MaritalStatus getEnum(String g){
+            switch (g) {
+                case "Casado":  return CASADO;
+                case "Casada":  return CASADO;
+                case "Soltero":  return SOLTERO;
+                case "Soltera":  return SOLTERO;
+                case "Divorciado":  return DIVORCIADO;
+                case "Divorciada":  return DIVORCIADO;
+                case "Viudo":  return VIUDO;
+                case "Viuda":  return VIUDO;
+            }
+            throw new IllegalArgumentException("Cannot cast String "+g+" to enum MaritalStatus");
+        }
+        public String toString(Sex g){
+
+
+            switch (this) {
+                case CASADO:  return "Casad"+g.genreEndWord();
+                case SOLTERO: return "Solter"+g.genreEndWord();
+                case DIVORCIADO: return "Divorciad"+g.genreEndWord();
+                case VIUDO:  return "Viud"+g.genreEndWord();
+
+            }
+
+            return "";
+
+        }
+
+    }
+
+
+    public enum Sex {
+        Masculino, Femenino;
+
+        @Override
+        public String toString(){
+
+            if(this== Sex.Masculino){
+                return "Masculino";}
+            else{return "Femenino";}
+
+        }
+        public String genreEndWord(){
+
+            if(this== Sex.Masculino){
+                return "o";}
+            else{return "a";}
+
+        }
+        public static Sex toGenero(String gen){
+            switch (gen) {
+                case "Masculino": return Masculino;
+                case "Femenino": return Femenino;
+                case "m": return Masculino;
+                case "f": return Femenino;
+            }
+            return null;
+        }
+
+    }
+
+    public String getFathersName() {
+        return fathersName;
+    }
+
+    public void setFathersName(String fathersName) {
+        this.fathersName = fathersName;
+    }
+
+
 
     public String getInfo() {
         return info;
@@ -113,19 +240,10 @@ public class PersonaDTO implements Serializable, Cloneable,Identificable {
         this.domicilio = domicilio;
     }
 
-    public Sexo getSex() {
-        return sex;
-    }
-
-    public void setSex(Sexo sex) {
-        this.sex = sex;
-    }
 
 
 
-    public enum Sexo{
-        Masculino, Femenino
-    }
+
 
 
  /*   @Enumerated(EnumType.STRING)

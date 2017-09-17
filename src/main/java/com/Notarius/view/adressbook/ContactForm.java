@@ -1,6 +1,8 @@
 package com.Notarius.view.adressbook;
 import com.Notarius.data.dto.PersonaDTO;
+import com.Notarius.view.misc.UploadReceiver;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
@@ -8,6 +10,13 @@ import com.vaadin.v7.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.v7.data.fieldgroup.FieldGroup;
 import com.vaadin.v7.ui.DateField;
 import com.vaadin.v7.ui.TextField;
+import com.vaadin.v7.ui.TextArea;
+import com.vaadin.v7.ui.ComboBox;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 /* Create custom UI Components.
  *
@@ -24,14 +33,30 @@ import com.vaadin.v7.ui.TextField;
         Button delete = new Button("Eliminar", this::delete);
 
 
-
-
          TextField firstName = new TextField("Nombre");
         TextField lastName = new TextField("Apellido");
         TextField dni = new TextField("DNI");
-        TextField phone = new TextField("Celular");
+        TextField cuitl = new TextField("CUIL/T");
+        TextField mothersName = new TextField("Nombre Madre");
+        TextField fathersName = new TextField("Nombre Padre");
+        TextArea info=new TextArea("Informacion Adicional");
+
+
+        ComboBox sex;
+        ComboBox countryofOrigin;
+        ComboBox maritalStatus;
+
+
+
+
+
+
+        TextField mobilePhone = new TextField("Celular");
+        TextField phone = new TextField("Teléfono");
         TextField email = new TextField("Mail");
-        DateField birthDate = new DateField("F.de Nac");
+        DateField birthDate = new DateField("Fecha.de Nac");
+        Upload upload ;
+
 
         AddressbookView addressbookView;
 
@@ -40,11 +65,15 @@ import com.vaadin.v7.ui.TextField;
         // Easily bind forms to beans and manage validation and buffering
         BeanFieldGroup<PersonaDTO> formFieldBindings;
 
+
     public ContactForm(AddressbookView addressbook) {
         addressbookView=addressbook;
         configureComponents();
+        setMargin(true);
         buildLayout();
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
+        Responsive.makeResponsive(this);
+        addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
     }
 
     private void configureComponents() {
@@ -54,8 +83,28 @@ import com.vaadin.v7.ui.TextField;
          * With Vaadin built-in styles you can highlight the primary save button
          * and give it a keyboard shortcut for a better UX.
          */
+
+
+
+       String[] locales=Locale.getISOCountries();
+       List <String> countries=new ArrayList<>();
+       Arrays.stream(locales).forEach(
+              country -> countries.add(new Locale("",country).getDisplayCountry()));
+
+
+
+       countryofOrigin=new ComboBox("Nacionalidad",countries);
+        maritalStatus=new ComboBox("Estado Civil",Arrays.asList( PersonaDTO.MaritalStatus.values()));
+        sex=new ComboBox("Sexo",Arrays.asList( PersonaDTO.Sex.values()));
+       countryofOrigin.setValue("Argentina");
+       maritalStatus.setValue(PersonaDTO.MaritalStatus.SOLTERO);
+      // sex.setValue(PersonaDTO.Sex.Masculino);
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+        UploadReceiver upr=new UploadReceiver();
+        upload= new Upload("Subir DNI",upr);
+        upload.setButtonCaption("Subir");
+
         setVisible(false);
     }
 
@@ -66,11 +115,15 @@ import com.vaadin.v7.ui.TextField;
         HorizontalLayout actions = new HorizontalLayout(save, cancel);
         addComponent(actions);
         actions.setSpacing(true);
-        VerticalLayout principal=new VerticalLayout( firstName, lastName, dni, birthDate);
-        VerticalLayout contacto=new VerticalLayout( email,phone);
+        VerticalLayout principal=new VerticalLayout( firstName, lastName, sex, birthDate,dni,cuitl,countryofOrigin,maritalStatus);
+        VerticalLayout contacto=new VerticalLayout( mothersName,fathersName,email,mobilePhone,phone);
+        VerticalLayout misc= new VerticalLayout(info,upload);
 
-         tabSheet.addTab(principal,"Principal");
+        tabSheet.addTab(principal,"Basico");
         tabSheet.addTab(contacto,"Contacto");
+        tabSheet.addTab(misc,"Misc.");
+
+
 
          addComponent(tabSheet);
 

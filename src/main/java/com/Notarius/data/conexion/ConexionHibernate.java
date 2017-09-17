@@ -33,7 +33,7 @@ public class ConexionHibernate {
 		 		.configure()
 				.setProperty(Environment.DIALECT, "org.hibernate.dialect.H2Dialect")
 				.setProperty(Environment.DRIVER, "org.h2.Driver")
-				.setProperty(Environment.URL, "jdbc:h2:~//tp2")
+				.setProperty(Environment.URL, "jdbc:h2:~//Notarius")
 				.setProperty(Environment.USER, "root")
 				.setProperty(Environment.PASS, "root")
 				.setProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS, "false");

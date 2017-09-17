@@ -50,8 +50,6 @@ public final class DashboardView extends Panel implements View{
 
         root.addComponent(buildHeader());
 
-
-
         Component content = buildContent();
         root.addComponent(content);
         root.setExpandRatio(content, 1);

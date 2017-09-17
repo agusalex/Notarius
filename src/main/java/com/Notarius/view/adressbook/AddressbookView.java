@@ -67,9 +67,7 @@ public class AddressbookView extends VerticalLayout implements View {
         buildLayout();
         setMargin(true);
         newContact.setStyleName(ValoTheme.BUTTON_PRIMARY);
-
         DashboardEventBus.register(this);
-        TabSheet tabs = new TabSheet();
         setSizeFull();
         addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
 

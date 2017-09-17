@@ -2,9 +2,6 @@ package com.Notarius.data.dto;
 
 import java.util.Collection;
 
-/**
- * QuickTickets Dashboard backend API.
- */
 public interface DataProvider {
 
     User authenticate(String userName, String password);
