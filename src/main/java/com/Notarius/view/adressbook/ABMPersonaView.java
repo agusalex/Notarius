@@ -1,8 +1,8 @@
 package com.Notarius.view.adressbook;
 
 
-import com.Notarius.data.dto.PersonaDTO;
-import com.Notarius.services.ContactService;
+import com.Notarius.data.dto.Persona;
+import com.Notarius.services.PersonaService;
 import com.Notarius.services.DashboardEvent;
 import com.Notarius.services.DashboardEventBus;
 import com.google.common.eventbus.Subscribe;
@@ -14,7 +14,6 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.v7.data.util.BeanItemContainer;
@@ -29,9 +28,9 @@ import com.vaadin.v7.ui.TextField;
  */
 
 @Title("Addressbook")
-@Theme("valo")
+@Theme("dashboard")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
-public class AddressbookView extends VerticalLayout implements View {
+public class ABMPersonaView extends VerticalLayout implements View {
 
     /*
      * Hundreds of widgets. Vaadin's user interface components are just Java
@@ -46,13 +45,13 @@ public class AddressbookView extends VerticalLayout implements View {
 
 
 
-    // ContactForm is an example of a custom component class
-    ContactForm contactForm = new ContactForm(this);
+    // OperacionForm is an example of a custom component class
+    PersonaForm personaForm = new PersonaForm(this);
 
-    // ContactService is a in-memory mock DAO that mimics
+    // PersonaService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
-    ContactService service = ContactService.getService();
+    PersonaService service = PersonaService.getService();
 
     /*
      * The "Main method".
@@ -61,7 +60,7 @@ public class AddressbookView extends VerticalLayout implements View {
      * visible user interface. Executed on every browser reload because a new
      * instance is created for each web page loaded.
      */
-    public AddressbookView(){
+    public ABMPersonaView(){
         super();
         configureComponents();
         buildLayout();
@@ -89,13 +88,13 @@ public class AddressbookView extends VerticalLayout implements View {
          * to synchronously handle those events. Vaadin automatically sends only
          * the needed changes to the web page without loading a new page.
          */
-        newContact.addClickListener(e -> contactForm.edit(new PersonaDTO()));
+        newContact.addClickListener(e -> personaForm.edit(new Persona()));
 
         filter.setInputPrompt("Filtrar...");
         filter.addTextChangeListener(e -> refreshContacts(e.getText()));
 
         contactList
-                .setContainerDataSource(new BeanItemContainer<>(PersonaDTO.class));
+                .setContainerDataSource(new BeanItemContainer<>(Persona.class));
 
         contactList.removeAllColumns();
         contactList.addColumn("firstName");
@@ -107,7 +106,7 @@ public class AddressbookView extends VerticalLayout implements View {
         contactList.setColumnOrder("firstName", "lastName", "DNI");
         contactList.setSelectionMode(Grid.SelectionMode.SINGLE);
         contactList.addSelectionListener(
-                e -> contactForm.edit((PersonaDTO) contactList.getSelectedRow()));
+                e -> personaForm.edit((Persona) contactList.getSelectedRow()));
         refreshContacts();
     }
 
@@ -136,7 +135,7 @@ public class AddressbookView extends VerticalLayout implements View {
         contactList.setSizeFull();
         left.setExpandRatio(contactList, 1);
 
-        HorizontalLayout mainLayout = new HorizontalLayout(left, contactForm);
+        HorizontalLayout mainLayout = new HorizontalLayout(left, personaForm);
         mainLayout.setSizeFull();
         mainLayout.setExpandRatio(left, 1);
         addComponent(mainLayout);
@@ -158,8 +157,8 @@ public class AddressbookView extends VerticalLayout implements View {
 
     private void refreshContacts(String stringFilter) {
         contactList.setContainerDataSource(new BeanItemContainer<>(
-                PersonaDTO.class, service.findAll(stringFilter)));
-        contactForm.setVisible(false);
+                Persona.class, service.findAll(stringFilter)));
+        personaForm.setVisible(false);
     }
 
     /*

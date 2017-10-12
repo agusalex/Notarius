@@ -6,6 +6,7 @@ package com.Notarius.data.dto;
  *
  */
 public interface Identificable {
+	boolean borrado=false;
 	public Long getId();
 
 }

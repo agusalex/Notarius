@@ -1,15 +1,18 @@
 package com.Notarius.view;
 
-import com.Notarius.view.adressbook.AddressbookView;
+import com.Notarius.view.adressbook.ABMPersonaView;
 import com.Notarius.view.dashboard.DashboardView;
 
+import com.Notarius.view.operacion.OperacionABMView;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 
 public enum DashboardViewType {
-    INICIO("Inicio", DashboardView.class, FontAwesome.HOME, true),CONTACTOS(
-            "Contactos", AddressbookView.class, FontAwesome.USERS, false) ;
+    INICIO("Inicio", DashboardView.class, FontAwesome.HOME, true),PERSONAS(
+            "Personas", ABMPersonaView.class, FontAwesome.USERS, false),OPERACIONES(
+            "Operaciones", OperacionABMView.class, VaadinIcons.HANDSHAKE, false) ;
 
     private final String viewName;
     private final Class<? extends View> viewClass;

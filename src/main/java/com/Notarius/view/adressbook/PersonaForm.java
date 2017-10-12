@@ -1,5 +1,5 @@
 package com.Notarius.view.adressbook;
-import com.Notarius.data.dto.PersonaDTO;
+import com.Notarius.data.dto.Persona;
 import com.Notarius.view.misc.UploadReceiver;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Responsive;
@@ -12,6 +12,7 @@ import com.vaadin.v7.ui.DateField;
 import com.vaadin.v7.ui.TextField;
 import com.vaadin.v7.ui.TextArea;
 import com.vaadin.v7.ui.ComboBox;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,11 +27,11 @@ import java.util.Locale;
  * Similarly named field by naming convention or customized
  * with @PropertyId annotation.
  */
-    public class ContactForm extends FormLayout {
+    public class PersonaForm extends FormLayout {
 
         Button save = new Button("Guardar", this::save);
         Button cancel = new Button("Cancelar", this::cancel);
-        Button delete = new Button("Eliminar", this::delete);
+        Button delete = new Button("Eliminar", this::deleteConfirmationDialog);
 
 
          TextField firstName = new TextField("Nombre");
@@ -58,22 +59,24 @@ import java.util.Locale;
         Upload upload ;
 
 
-        AddressbookView addressbookView;
+        ABMPersonaView ABMPersonaView;
 
-        PersonaDTO contact;
+        Persona contact;
 
         // Easily bind forms to beans and manage validation and buffering
-        BeanFieldGroup<PersonaDTO> formFieldBindings;
+        BeanFieldGroup<Persona> formFieldBindings;
 
 
-    public ContactForm(AddressbookView addressbook) {
-        addressbookView=addressbook;
+    public PersonaForm(ABMPersonaView addressbook) {
+        ABMPersonaView =addressbook;
         configureComponents();
         setMargin(true);
         buildLayout();
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         Responsive.makeResponsive(this);
         addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
+
+        setHeight("100%");
     }
 
     private void configureComponents() {
@@ -94,11 +97,11 @@ import java.util.Locale;
 
 
        countryofOrigin=new ComboBox("Nacionalidad",countries);
-        maritalStatus=new ComboBox("Estado Civil",Arrays.asList( PersonaDTO.MaritalStatus.values()));
-        sex=new ComboBox("Sexo",Arrays.asList( PersonaDTO.Sex.values()));
+        maritalStatus=new ComboBox("Estado Civil",Arrays.asList( Persona.MaritalStatus.values()));
+        sex=new ComboBox("Sexo",Arrays.asList( Persona.Sex.values()));
        countryofOrigin.setValue("Argentina");
-       maritalStatus.setValue(PersonaDTO.MaritalStatus.SOLTERO);
-      // sex.setValue(PersonaDTO.Sex.Masculino);
+       maritalStatus.setValue(Persona.MaritalStatus.SOLTERO);
+      // sex.setValue(Persona.Sex.Masculino);
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         UploadReceiver upr=new UploadReceiver();
@@ -148,24 +151,43 @@ import java.util.Locale;
             formFieldBindings.commit();
 
             // Save DAO to backend with direct synchronous service API
-            getAddressbookView().service.save(contact);
+            getABMPersonaView().service.save(contact);
 
-            String msg = String.format("Saved '%s %s'.", contact.getFirstName(),
+            String msg = String.format("Guardado '%s %s'.", contact.getFirstName(),
                     contact.getLastName());
             Notification.show(msg, Type.TRAY_NOTIFICATION);
-            getAddressbookView().refreshContacts();
+            getABMPersonaView().refreshContacts();
         } catch (FieldGroup.CommitException e) {
             // Validation exceptions could be shown here
         }
-        getAddressbookView().newContact.setVisible(true);
+        getABMPersonaView().newContact.setVisible(true);
     }
 
     public void cancel(Button.ClickEvent event) {
         // Place to call business logic.
         Notification.show("Cancelado", Type.TRAY_NOTIFICATION);
-        getAddressbookView().contactList.select(null);
+        getABMPersonaView().contactList.select(null);
         setVisible(false);
-        getAddressbookView().newContact.setVisible(true);
+        getABMPersonaView().newContact.setVisible(true);
+    }
+
+
+
+    public void deleteConfirmationDialog(Button.ClickEvent event){
+        final boolean[] bool = {false};
+        ConfirmDialog.show(this.getABMPersonaView().getUI(),"Eliminar Persona","Esta seguro que desea eliminar esta persona?, esta accion no es reversible",
+                "Entiendo y deseo eliminar","No eliminar",new ConfirmDialog.Listener() {
+                    @Override
+                    public void onClose(ConfirmDialog confirmDialog) {
+                        if (confirmDialog.isConfirmed()) {
+                            delete(event);
+                        }
+
+                    }
+
+                });
+
+
     }
 
     private void delete(Button.ClickEvent event) {
@@ -174,32 +196,37 @@ import java.util.Locale;
                 Notification.show(msg, Type.TRAY_NOTIFICATION);
                 return;
             }
-            getAddressbookView().service.delete(contact);
+            getABMPersonaView().service.delete(contact);
 
             String msg = String.format("Eliminado '%s %s'.", contact.getFirstName(),
                     contact.getLastName());
             Notification.show(msg, Type.TRAY_NOTIFICATION);
-            getAddressbookView().refreshContacts();
-        getAddressbookView().newContact.setVisible(true);
+            getABMPersonaView().refreshContacts();
+        getABMPersonaView().newContact.setVisible(true);
 
     }
 
-    void edit(PersonaDTO contact) {
+    void edit(Persona contact) {
         this.contact = contact;
         if (contact != null) {
             // Bind the properties of the contact POJO to fiels in this form
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(contact,
                     this);
             firstName.focus();
+            if(contact.getId()==null){
+                delete.setVisible(false);
+            }
+            else{
+                delete.setVisible(true);}
 
         }
         setVisible(contact != null);
-        getAddressbookView().newContact.setVisible(contact == null);
+        getABMPersonaView().newContact.setVisible(contact == null);
 
     }
 
-    public AddressbookView getAddressbookView() {
-        return addressbookView;
+    public ABMPersonaView getABMPersonaView() {
+        return ABMPersonaView;
     }
 
 

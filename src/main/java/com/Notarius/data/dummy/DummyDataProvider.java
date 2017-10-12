@@ -1,17 +1,20 @@
 package com.Notarius.data.dummy;
 
+import com.Notarius.data.dao.DAO;
+import com.Notarius.data.dao.DAOImpl;
 import com.Notarius.data.dto.DashboardNotification;
 import com.Notarius.data.dto.DataProvider;
+import com.Notarius.data.dto.Operacion;
 import com.Notarius.data.dto.User;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -58,15 +61,56 @@ public class DummyDataProvider implements DataProvider {
     }
 
     /* JSON utility method */
-    private static JsonObject readJsonFromFile(File path) throws IOException {
+    private static JsonArray readJsonFromFile(File path) throws IOException {
         BufferedReader rd = new BufferedReader(new FileReader(path));
         String jsonText = readAll(rd);
         JsonElement jelement = new JsonParser().parse(jsonText);
-        JsonObject jobject = jelement.getAsJsonObject();
+        JsonArray jobject = jelement.getAsJsonArray();
         return jobject;
     }
 
+public void levantarOperaciones(){
+    try {
+       File f= new File("escribania.json");
+        System.out.println(f.getAbsolutePath());
 
+        LocalDate now=LocalDate.now();
+        JsonArray jsonarray = readJsonFromFile(f);
+        ArrayList arrayList = new ArrayList();
+        DAO dao=new DAOImpl<Operacion>(Operacion.class);
+        ArrayList<Operacion> array = new ArrayList<Operacion>();
+
+
+        for (int i = 1; i < jsonarray.getAsJsonArray().size(); i++) {
+            JsonObject jsonobject = jsonarray.get(i).getAsJsonObject();
+            Integer carpeta = jsonobject.get("carpeta").getAsInt();
+            String asunto = jsonobject.get("asunto").getAsString();
+            Operacion operacion=new Operacion();
+            operacion.setFechaDeIngreso(now);
+            operacion.setBorrado(false);
+            operacion.setEstado(Operacion.Estado.Finalizada);
+            operacion.setTipo(Operacion.Tipo.Otro);
+            operacion.setAsunto(asunto);
+            operacion.setCarpeta(carpeta);
+            System.out.println(operacion);
+            dao.save(operacion);
+        }
+        String json = new Gson().toJson(array);
+        writeFile("output.json",json);
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+    public static void writeFile(String canonicalFilename, String text)
+            throws IOException
+    {
+        File file = new File (canonicalFilename);
+        BufferedWriter out = new BufferedWriter(new FileWriter(file));
+        out.write(text);
+        out.close();
+    }
   
     @Override
     public User authenticate(String userName, String password) {

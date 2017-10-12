@@ -9,7 +9,7 @@ import com.Notarius.data.conexion.ConexionHibernate;
 import com.Notarius.data.dto.Identificable;
 
 
-import com.Notarius.data.dto.PersonaDTO;
+import com.Notarius.data.dto.Persona;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -171,9 +171,9 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 	}
 
 	public static void main(String[] args) {
-		DAOImpl<PersonaDTO> dao = new DAOImpl<>(PersonaDTO.class);
+		DAOImpl<Persona> dao = new DAOImpl<>(Persona.class);
 		System.out.println(dao.getClaseEntidad().getSimpleName());
-		PersonaDTO p = new PersonaDTO();
+		Persona p = new Persona();
 
 
 		dao.create(p);

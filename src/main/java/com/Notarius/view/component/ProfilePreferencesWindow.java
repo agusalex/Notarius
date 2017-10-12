@@ -157,7 +157,7 @@ public class ProfilePreferencesWindow extends Window {
         sexField.addStyleName("horizontal");
         details.addComponent(sexField);
 
-        Label section = new Label("PersonaDTO Info");
+        Label section = new Label("Persona Info");
         section.addStyleName(ValoTheme.LABEL_H4);
         section.addStyleName(ValoTheme.LABEL_COLORED);
         details.addComponent(section);

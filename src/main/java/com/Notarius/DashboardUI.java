@@ -17,6 +17,7 @@ import com.vaadin.server.Page.BrowserWindowResizeListener;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
@@ -58,6 +59,7 @@ public final class DashboardUI extends UI {
                         DashboardEventBus.post(new DashboardEvent.BrowserResizeEvent());
                     }
                 });
+        fakeLogin();
     }
 
     /**
@@ -65,6 +67,17 @@ public final class DashboardUI extends UI {
      * If the user is logged in with appropriate privileges, main view is shown.
      * Otherwise login view is shown.
      */
+    private void fakeLogin(){
+
+            DashboardEventBus.post(new DashboardEvent.UserLoginRequestedEvent(""
+                    , ""));
+
+
+         /*   DummyDataProvider dummyDataProvider=new DummyDataProvider();
+           dummyDataProvider.levantarOperaciones();*/
+
+    }
+
     private void updateContent() {
         User user = (User) VaadinSession.getCurrent()
                 .getAttribute(User.class.getName());

@@ -22,7 +22,9 @@
   .valo-menu-item {
     overflow: hidden;
   }
-
+  .v-grid-row.finalizada {
+    color: springgreen;
+  }
   .v-ui[width-range~="0-800px"] {
     .valo-menu-title {
       @include valo-gradient($color: $valo-menu-background-color);

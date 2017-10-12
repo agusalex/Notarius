@@ -14,7 +14,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class LoginView extends VerticalLayout {
-
+    final Button signin = new Button("Iniciar Sesión");
     public LoginView() {
         setSizeFull();
         setMargin(false);
@@ -35,6 +35,7 @@ public class LoginView extends VerticalLayout {
         notification.show(Page.getCurrent());
 
         */
+
     }
 
     private Component buildLoginForm() {
@@ -62,7 +63,7 @@ public class LoginView extends VerticalLayout {
         password.setIcon(FontAwesome.LOCK);
         password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-        final Button signin = new Button("Iniciar Sesión");
+
         signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
         signin.setClickShortcut(KeyCode.ENTER);
         signin.focus();

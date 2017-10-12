@@ -7,7 +7,9 @@ import org.apache.commons.beanutils.BeanUtils;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * A simple DTO for the address book example.
@@ -18,11 +20,11 @@ import java.util.Locale;
 // Backend DTO class. This is just a typical Java backend implementation
 // class and nothing Vaadin specific.
 @Entity
-@Table(name = "people")
-public class PersonaDTO implements Serializable, Cloneable,Identificable {
+@Table(name = " personas")
+public class Persona implements Identificable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idPersona")
     private Long id;
 
@@ -55,46 +57,6 @@ public class PersonaDTO implements Serializable, Cloneable,Identificable {
     @Column(name = "email")
     private String email="";
 
-    public String getCuitl() {
-
-        return cuitl;
-    }
-
-    public void setCuitl(String cuitl) {
-        this.cuitl = cuitl;
-    }
-
-    public Sex getSex() {
-        return sex;
-    }
-
-    public void setSex(Sex sex) {
-        this.sex = sex;
-    }
-
-    public MaritalStatus getMaritalStatus() {
-        return maritalStatus;
-    }
-
-    public void setMaritalStatus(MaritalStatus maritalStatus) {
-        this.maritalStatus = maritalStatus;
-    }
-
-    public String getMobilePhone() {
-        return mobilePhone;
-    }
-
-    public void setMobilePhone(String mobilePhone) {
-        this.mobilePhone = mobilePhone;
-    }
-
-    public String getCountryofOrigin() {
-        return countryofOrigin;
-    }
-
-    public void setCountryofOrigin(String countryofOrigin) {
-        this.countryofOrigin = countryofOrigin;
-    }
 
     @Column(name = "birthDate")
     private Date birthDate;
@@ -111,13 +73,37 @@ public class PersonaDTO implements Serializable, Cloneable,Identificable {
     @Column(name = "countryofOrigin")
     private String countryofOrigin="";
 
+    @Column(name = "borrado")
+    private boolean borrado;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idDomicilio")
     private DomicilioDTO domicilio;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "PERSONA_OPERACION", joinColumns = { @JoinColumn(name = "idPersona") }, inverseJoinColumns = { @JoinColumn(name = "idOperacion") })
+    private Set<Operacion> operaciones=new HashSet<Operacion>();
 
 
+
+
+    public Persona(Long idd){
+        id=idd;
+    }
+    public Persona(){
+        super();
+        this.borrado=false;
+    }
+
+    public String getCuitl() {
+
+        return cuitl;
+    }
+
+    public void addOperacion(Operacion operacion){
+       if(!operaciones.contains(operacion))
+            operaciones.add(operacion);
+    }
 
     public enum MaritalStatus {
         CASADO,DIVORCIADO,SOLTERO,VIUDO;
@@ -168,6 +154,7 @@ public class PersonaDTO implements Serializable, Cloneable,Identificable {
     }
 
 
+
     public enum Sex {
         Masculino, Femenino;
 
@@ -197,6 +184,59 @@ public class PersonaDTO implements Serializable, Cloneable,Identificable {
         }
 
     }
+
+    public boolean isBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
+    }
+
+
+    public Set<Operacion> getOperaciones() {
+        return operaciones;
+    }
+
+    public void setOperaciones(HashSet<Operacion> operaciones) {
+        this.operaciones = operaciones;
+    }
+    public void setCuitl(String cuitl) {
+        this.cuitl = cuitl;
+    }
+
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+
+    public String getCountryofOrigin() {
+        return countryofOrigin;
+    }
+
+    public void setCountryofOrigin(String countryofOrigin) {
+        this.countryofOrigin = countryofOrigin;
+    }
+
 
     public String getFathersName() {
         return fathersName;
@@ -255,12 +295,7 @@ public class PersonaDTO implements Serializable, Cloneable,Identificable {
     private DomicilioDTO domicilio;*/
 
 
-    public PersonaDTO(Long idd){
-        id=idd;
-    }
-    public PersonaDTO(){
 
-    }
 
     public Long getId() {
         return id;
@@ -310,18 +345,10 @@ public class PersonaDTO implements Serializable, Cloneable,Identificable {
         this.birthDate = birthDate;
     }
 
-    @Override
-    public PersonaDTO clone() throws CloneNotSupportedException {
-        try {
-            return (PersonaDTO) BeanUtils.cloneBean(this);
-        } catch (Exception ex) {
-            throw new CloneNotSupportedException();
-        }
-    }
 
     @Override
     public String toString() {
-        return "PersonaDTO{" + "id=" + id + ", firstName=" + firstName
+        return "Persona{" + "id=" + id + ", firstName=" + firstName
                 + ", lastName=" + lastName + ", phone=" + phone + ", email="
                 + email + ", birthDate=" + birthDate + '}';
     }

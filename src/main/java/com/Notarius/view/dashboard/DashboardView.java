@@ -3,10 +3,16 @@ package com.Notarius.view.dashboard;
 import com.Notarius.DashboardUI;
 
 
+import com.Notarius.data.dao.DAO;
+import com.Notarius.data.dao.DAOImpl;
 import com.Notarius.data.dto.DashboardNotification;
+import com.Notarius.data.dto.Notas;
+import com.Notarius.data.dto.Operacion;
 import com.Notarius.services.DashboardEvent;
 import com.Notarius.services.DashboardEventBus;
+import com.Notarius.services.NotasService;
 import com.google.common.eventbus.Subscribe;
+import com.vaadin.data.HasValue;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -14,6 +20,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
+import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -21,11 +28,20 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 @SuppressWarnings("serial")
 public final class DashboardView extends Panel implements View{
+
+    public NotasService getNotasService() {
+        return notasService;
+    }
+
+    public void setNotasService(NotasService notasService) {
+        this.notasService = notasService;
+    }
 
     public static final String EDIT_ID = "dashboard-edit";
     public static final String TITLE_ID = "dashboard-title";
@@ -35,6 +51,13 @@ public final class DashboardView extends Panel implements View{
     private CssLayout dashboardPanels;
     private final VerticalLayout root;
     private Window notificationsWindow;
+   private final TextArea notes=new TextArea();
+
+
+
+    public Notas notas=new Notas("Notas");
+    NotasService notasService=NotasService.getService();
+
 
     public DashboardView() {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -62,6 +85,19 @@ public final class DashboardView extends Panel implements View{
                 DashboardEventBus.post(new DashboardEvent.CloseOpenWindowsEvent());
             }
         });
+
+        ArrayList<Notas> notes=(ArrayList<Notas>)notasService.findAll("");
+
+        if(notes.size()<1){
+            notasService.save(this.notas);
+        }
+        else{
+            this.notas=notes.get(0);
+        }
+
+    this.notes.setValue(this.notas.getNota());
+
+
     }
 
 
@@ -113,8 +149,15 @@ public final class DashboardView extends Panel implements View{
 
 
     private Component buildNotes() {
-        TextArea notes = new TextArea("Notas");
-        notes.setValue("Notas:\n-Una nota ");
+       notes.addValueChangeListener(new HasValue.ValueChangeListener<String>() {
+           @Override
+           public void valueChange(HasValue.ValueChangeEvent<String> valueChangeEvent) {
+               notas.setNota(valueChangeEvent.getValue());
+               notasService.save(notas);
+
+           }
+       });
+       notes.setValueChangeMode(ValueChangeMode.LAZY);
         notes.setSizeFull();
         notes.addStyleName(ValoTheme.TEXTAREA_BORDERLESS);
         Component panel = createContentWrapper(notes);
@@ -316,5 +359,11 @@ public final class DashboardView extends Panel implements View{
             setDescription(description);
         }
     }
+    public Notas getNotas() {
+        return notas;
+    }
 
+    public void setNotas(Notas notas) {
+        this.notas = notas;
+    }
 }
