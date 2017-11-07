@@ -65,9 +65,10 @@ public class ABMPersonaView extends VerticalLayout implements View {
         configureComponents();
         buildLayout();
         setMargin(true);
+        setSizeFull();
         newContact.setStyleName(ValoTheme.BUTTON_PRIMARY);
         DashboardEventBus.register(this);
-        setSizeFull();
+
         addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
 
 

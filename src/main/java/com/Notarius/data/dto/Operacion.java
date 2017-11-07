@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "operacion",uniqueConstraints = {@UniqueConstraint(columnNames={"carpeta"})})
+@Table(name = "operacion")
 public class Operacion implements Serializable,Identificable{
 
 

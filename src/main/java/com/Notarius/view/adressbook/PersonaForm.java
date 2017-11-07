@@ -1,7 +1,9 @@
 package com.Notarius.view.adressbook;
 import com.Notarius.data.dto.Persona;
+import com.Notarius.view.component.DialogConfirmacion;
 import com.Notarius.view.misc.UploadReceiver;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
@@ -75,7 +77,7 @@ import java.util.Locale;
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         Responsive.makeResponsive(this);
         addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
-
+        addStyleName("v-scrollable");
         setHeight("100%");
     }
 
@@ -174,19 +176,13 @@ import java.util.Locale;
 
 
     public void deleteConfirmationDialog(Button.ClickEvent event){
-        final boolean[] bool = {false};
-        ConfirmDialog.show(this.getABMPersonaView().getUI(),"Eliminar Persona","Esta seguro que desea eliminar esta persona?, esta accion no es reversible",
-                "Entiendo y deseo eliminar","No eliminar",new ConfirmDialog.Listener() {
-                    @Override
-                    public void onClose(ConfirmDialog confirmDialog) {
-                        if (confirmDialog.isConfirmed()) {
-                            delete(event);
-                        }
-
-                    }
-
+        DialogConfirmacion dialog = new DialogConfirmacion("Eliminar Operacion",
+                VaadinIcons.WARNING,
+                "¿Esta seguro que desea eliminar esta operacion?",
+                "100px",
+                confirmacion -> {
+                   delete(event);
                 });
-
 
     }
 

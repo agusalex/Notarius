@@ -4,7 +4,6 @@ package com.Notarius.services;
 import com.Notarius.data.dao.DAO;
 import com.Notarius.data.dao.DAOImpl;
 import com.Notarius.data.dto.Operacion;
-import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.*;
 
@@ -36,30 +35,39 @@ public class OperacionService {
 
 
     public synchronized List<Operacion> findAll(String stringFilter) {
-        ArrayList ret = new ArrayList();
-        DAO dao=new DAOImpl<Operacion>(Operacion.class);
-        List<Operacion> Operacions=dao.readAll();
-
+        ArrayList<Operacion> ret = new ArrayList<>();
+        DAO<Operacion> dao=new DAOImpl<Operacion>(Operacion.class);
+        ArrayList<Operacion> Operacions=( ArrayList<Operacion>)dao.readAll();
+        System.out.println("db:");
+        Operacions.forEach(e-> System.out.println(e.toString()));
 
         for (int i = 0; i <Operacions.size() ; i++) {
-            Operacion Operacion=Operacions.get(i);
-
+            Operacion operacion=Operacions.get(i);
+            System.out.println("Operacion:"+i+" "+operacion);
 
                 boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
-                                        || Operacion.toString().toLowerCase()
+                                        || operacion.toString().toLowerCase()
                                         .contains(stringFilter.toLowerCase());
-                if (passesFilter) {
-                    if(!Operacion.isBorrado()) {
-                        ret.add(Operacion);
+                if (passesFilter)
+                    if(!operacion.isBorrado())
+                        ret.add(operacion);
 
-                    }
-                    Operacions.remove(Operacion);
-                }
+
+
+
 
         }
-        if(stringFilter!=null&&!stringFilter.equals(""))
-            ret.addAll(Utils.Search(Operacions,stringFilter));
 
+        if(stringFilter!=null&&!stringFilter.equals(""))
+            Utils.Search(Operacions,stringFilter).forEach(
+                    operacion -> {
+                        if(!operacion.isBorrado()) {
+                            if(!ret.contains(operacion)) {
+                                ret.add(operacion);
+                            }
+                        }
+            });
+        
 
         Collections.sort(ret, new Comparator<Operacion>() {
 
@@ -81,7 +89,7 @@ public class OperacionService {
     }
 
     public synchronized void delete(Operacion value) {
-        DAO dao=new DAOImpl<Operacion>(Operacion.class);
+        DAO<Operacion> dao=new DAOImpl<Operacion>(Operacion.class);
         value.setCarpeta(10000+value.getCarpeta());
         value.setBorrado(true);
         save(value);
@@ -89,7 +97,7 @@ public class OperacionService {
 
     public synchronized void save(Operacion entry) {
 
-        DAO dao=new DAOImpl<Operacion>(Operacion.class);
+        DAO<Operacion> dao=new DAOImpl<Operacion>(Operacion.class);
         dao.save(entry);
     }
 

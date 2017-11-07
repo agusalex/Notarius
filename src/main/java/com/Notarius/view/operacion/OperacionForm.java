@@ -2,10 +2,12 @@ package com.Notarius.view.operacion;
 
 import com.Notarius.data.dto.Operacion;
 import com.Notarius.services.OperacionService;
+import com.Notarius.view.component.DialogConfirmacion;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -160,25 +162,21 @@ public class OperacionForm extends FormLayout {
     public void delete() {
 
 
+        DialogConfirmacion dialog = new DialogConfirmacion("Eliminar Operacion",
+                VaadinIcons.WARNING,
+                "¿Esta seguro que desea eliminar esta operacion?",
+                "100px",
+                confirmacion -> {
+                    service.delete(operacion);
+                    addressbookView.updateList();
+                    setVisible(false);
+                    getAddressbookView().setComponentsVisible(true);
+                    getAddressbookView().showSuccessNotification("Borrado: " + operacion.toString());
+                });
 
-           ConfirmDialog.show(this.getUI(),"Eliminar Operacion","Esta seguro que desea eliminar esta operacion?, " +
-                           "Despues no podra usar MAS este numero de carpeta, esta accion no es reversible",
-                   "Entiendo y deseo eliminar","No eliminar",new ConfirmDialog.Listener() {
-                @Override
-                public void onClose(ConfirmDialog confirmDialog) {
-                    if (confirmDialog.isConfirmed()) {
-                        service.delete(operacion);
-                        addressbookView.updateList();
-                        setVisible(false);
-                        getAddressbookView().setComponentsVisible(true);
-                        getAddressbookView().showSuccessNotification("Borrado: "+ operacion.toString());
 
-                    }
+    }
 
-                }
-
-            });
-       }
 
 
 
