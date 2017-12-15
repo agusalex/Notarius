@@ -1,6 +1,6 @@
 package com.Notarius.view;
 
-import com.Notarius.view.adressbook.ABMPersonaView;
+import com.Notarius.view.adressbook.PersonaABMView;
 import com.Notarius.view.dashboard.DashboardView;
 
 import com.Notarius.view.operacion.OperacionABMView;
@@ -11,7 +11,7 @@ import com.vaadin.server.Resource;
 
 public enum DashboardViewType {
     INICIO("Inicio", DashboardView.class, FontAwesome.HOME, true),PERSONAS(
-            "Personas", ABMPersonaView.class, FontAwesome.USERS, false),OPERACIONES(
+            "Personas", PersonaABMView.class, FontAwesome.USERS, false),OPERACIONES(
             "Operaciones", OperacionABMView.class, VaadinIcons.HANDSHAKE, false) ;
 
     private final String viewName;

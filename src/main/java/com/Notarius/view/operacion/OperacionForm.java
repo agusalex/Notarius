@@ -2,7 +2,7 @@ package com.Notarius.view.operacion;
 
 import com.Notarius.data.dto.Operacion;
 import com.Notarius.services.OperacionService;
-import com.Notarius.view.component.DialogConfirmacion;
+import com.Notarius.view.component.DeleteButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToIntegerConverter;
@@ -19,12 +19,17 @@ public class OperacionForm extends FormLayout {
 
     private Operacion operacion;
     Button save = new Button("Guardar");
-    Button delete = new Button("Eliminar");
     TextField asunto = new TextField("Asunto");
     TextField carpeta = new TextField("Carpeta");
     private ComboBox<Operacion.Tipo> tipo = new ComboBox<>("Tipo",Operacion.Tipo.toList());
     private ComboBox<Operacion.Estado> estado = new ComboBox<>("Estado",Operacion.Estado.toList());
-    // private NativeSelect<operacion.Sexo> sexo = new NativeSelect<>("Sexo");
+    private DeleteButton delete = new DeleteButton("Eliminar",
+            VaadinIcons.WARNING, "Eliminar", "20%", new Button.ClickListener() {
+        @Override
+        public void buttonClick(Button.ClickEvent clickEvent) {
+            delete();
+        }
+    });
 
     OperacionService service = new OperacionService();
     private OperacionABMView addressbookView;
@@ -56,8 +61,6 @@ public class OperacionForm extends FormLayout {
 
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
-        //test.addClickListener(e -> this.test());
-        delete.addClickListener(e -> this.delete());
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         setVisible(false);
@@ -162,17 +165,12 @@ public class OperacionForm extends FormLayout {
     public void delete() {
 
 
-        DialogConfirmacion dialog = new DialogConfirmacion("Eliminar Operacion",
-                VaadinIcons.WARNING,
-                "¿Esta seguro que desea eliminar esta operacion?",
-                "100px",
-                confirmacion -> {
-                    service.delete(operacion);
-                    addressbookView.updateList();
-                    setVisible(false);
-                    getAddressbookView().setComponentsVisible(true);
-                    getAddressbookView().showSuccessNotification("Borrado: " + operacion.toString());
-                });
+        service.delete(operacion);
+        addressbookView.updateList();
+        setVisible(false);
+        getAddressbookView().setComponentsVisible(true);
+        getAddressbookView().showSuccessNotification("Borrado: " + operacion.toString());
+
 
 
     }

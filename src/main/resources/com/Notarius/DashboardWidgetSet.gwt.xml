@@ -27,4 +27,10 @@
 
 
     <inherits name="com.vaadin.tapio.googlemaps.Widgetset" />
+
+    <inherits name="org.vaadin.risto.stepper.StepperWidgetset" />
+
+    <inherits name="org.tepi.imageviewer.WidgetSet" />
+
+    <inherits name="org.vaadin.addon.calendar.WidgetSet" />
 </module>

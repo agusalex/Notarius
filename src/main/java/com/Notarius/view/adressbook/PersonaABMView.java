@@ -1,10 +1,10 @@
-package com.Notarius.view.operacion;
+package com.Notarius.view.adressbook;
 
 
 
-import com.Notarius.data.dto.Operacion;
+import com.Notarius.data.dto.Persona;
 import com.Notarius.services.DashboardEvent;
-import com.Notarius.services.OperacionService;
+import com.Notarius.services.PersonaService;
 import com.Notarius.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
@@ -22,17 +22,17 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
 
-/* User Interface written in Java.
- *
- * Define the user interface shown on the Vaadin generated web page by extending the UI class.
- * By default, a new UI instance is automatically created when the page is loaded. To reuse
- * the same instance, add @PreserveOnRefresh.
- */
+        /* User Interface written in Java.
+         *
+         * Define the user interface shown on the Vaadin generated web page by extending the UI class.
+         * By default, a new UI instance is automatically created when the page is loaded. To reuse
+         * the same instance, add @PreserveOnRefresh.
+         */
 
 @Title("Addressbook")
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
-public class OperacionABMView extends DefaultLayout implements View {
+public class PersonaABMView extends DefaultLayout implements View {
 
     /*
      * Hundreds of widgets. Vaadin's user interface components are just Java
@@ -42,36 +42,32 @@ public class OperacionABMView extends DefaultLayout implements View {
      * vaadin.com/directory.
      */
     TextField filter = new TextField();
-    private Grid<Operacion> grid = new Grid<>(Operacion.class);
+    private Grid<Persona> grid = new Grid<>(Persona.class);
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
-    RadioButtonGroup<String> filtroRoles= new RadioButtonGroup<>();
     Button seleccionFiltro=new Button(VaadinIcons.SEARCH);
     Window sw = new Window("Filtrar");
 
-   
-   
+
+
 
 
     HorizontalLayout mainLayout;
     // OperacionForm is an example of a custom component class
-    OperacionForm operacionForm = new OperacionForm(this);
+    PersonaForm personaForm = new PersonaForm(this);
     private boolean isonMobile=false;
 
     // OperacionService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
-    OperacionService service = new OperacionService();
+   PersonaService service = new PersonaService();
 
 
-    public OperacionABMView(){
+    public PersonaABMView(){
 
         super();
         buildLayout();
         configureComponents();
-        UI.getCurrent().getPage().getStyles().add(".v-grid-row.finalizada {color: darkgreen;}" +
-                "}");
-        UI.getCurrent().getPage().getStyles().add(".v-grid-row.descartada {color: darkred;}");
 
 
     }
@@ -88,7 +84,7 @@ public class OperacionABMView extends DefaultLayout implements View {
          * to synchronously handle those events. Vaadin automatically sends only
          * the needed changes to the web page without loading a new page.
          */
-    //    newItem.addClickListener(e -> operacionForm.setOperacion(new Operacion()));
+        //    newItem.addClickListener(e -> personaForm.setOperacion(new Operacion()));
 
         filter.addValueChangeListener(e -> updateList());
         filter.setValueChangeMode(ValueChangeMode.LAZY);
@@ -99,31 +95,19 @@ public class OperacionABMView extends DefaultLayout implements View {
 
         newItem.addClickListener(e -> {
             grid.asSingleSelect().clear();
-            operacionForm.setOperacion(new Operacion());
+            personaForm.setPersona(new Persona());
         });
-        
-
-        
-       
-
-       grid.setColumns("carpeta", "asunto", "tipo","fechaDeIngreso","estado");
-
-
-       grid.setStyleGenerator(operacion -> {
-           String ret = null;
-           if(operacion.getEstado()!=null) {
-               if (operacion.getEstado().equals(Operacion.Estado.Finalizada)) {
-                   ret = "finalizada";
-               }
-               else  if (operacion.getEstado().equals(Operacion.Estado.Descartada)) {
-                   ret = "descartada";
-               }
-           }
-           return ret;
-       });
 
 
 
+
+
+
+
+        grid.setColumns("firstName","lastName","DNI");
+        grid.getColumn("firstName").setCaption("Nombre");
+        grid.getColumn("lastName").setCaption("Apellido");
+        grid.getColumn("DNI").setCaption("DNI");
 
         grid.getColumns().get(0).setStyleGenerator(person -> "rightalign");
 
@@ -132,15 +116,16 @@ public class OperacionABMView extends DefaultLayout implements View {
         Responsive.makeResponsive(this);
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() == null) {
-        	if (operacionForm.isVisible())
-        	    setComponentsVisible(true);
-                operacionForm.setVisible(false);
+                if (personaForm.isVisible())
+                    setComponentsVisible(true);
+                personaForm.setVisible(false);
             } else {
-                operacionForm.setOperacion(event.getValue());
+                personaForm.setPersona(event.getValue());
             }
         });
 
-       // grid.setSelectionMode(Grid.SelectionMod
+
+        // grid.setSelectionMode(Grid.SelectionMod
         //
         // e.SINGLE);
 
@@ -149,7 +134,7 @@ public class OperacionABMView extends DefaultLayout implements View {
         }
         newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
         //filter.setIcon(VaadinIcons.SEARCH);
-       //filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+        //filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
 
         updateList();
@@ -184,11 +169,11 @@ public class OperacionABMView extends DefaultLayout implements View {
         filtering.addComponents(seleccionFiltro,filter, clearFilterTextBtn,newItem);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         hl.addComponent(filtering);
-        
 
-       buildToolbar("Operaciones",hl);
+
+        buildToolbar("Personas",hl);
         grid.setSizeFull();
-        mainLayout = new HorizontalLayout(grid, operacionForm);
+        mainLayout = new HorizontalLayout(grid, personaForm);
         mainLayout.setSizeFull();
         addComponent(mainLayout);
         this.setExpandRatio(mainLayout, 1);
@@ -223,12 +208,12 @@ public class OperacionABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-            List<Operacion> customers = service.findAll(filter.getValue());
-            grid.setItems(customers);
+        List<Persona> customers = service.findAll(filter.getValue());
+        grid.setItems(customers);
     }
-    
+
     public void filter() {
-    	grid.setItems(service.findAll(filter.getValue()));
+        grid.setItems(service.findAll(filter.getValue()));
     }
 
     public boolean isIsonMobile() {
@@ -236,12 +221,12 @@ public class OperacionABMView extends DefaultLayout implements View {
     }
 
     public void ClearFilterBtnAction(){
-            if(this.operacionForm.isVisible()){
-                newItem.focus();
-                operacionForm.cancel();
+        if(this.personaForm.isVisible()){
+            newItem.focus();
+            personaForm.cancel();
 
-            }
-            filter.clear();
+        }
+        filter.clear();
     }
 
 
@@ -266,11 +251,11 @@ public class OperacionABMView extends DefaultLayout implements View {
         if (Page.getCurrent().getBrowserWindowWidth() < 800) {
 
             isonMobile=true;
-    }
+        }
         else{
-        isonMobile=false;
+            isonMobile=false;
 
-    }
+        }
 
     }
 

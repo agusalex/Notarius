@@ -1,230 +1,266 @@
 package com.Notarius.view.adressbook;
+
 import com.Notarius.data.dto.Persona;
-import com.Notarius.view.component.DialogConfirmacion;
-import com.Notarius.view.misc.UploadReceiver;
+import com.Notarius.services.PersonaService;
+import com.Notarius.view.component.BlueLabel;
+import com.Notarius.view.component.DeleteButton;
+import com.vaadin.data.Binder;
+import com.vaadin.data.BindingValidationStatus;
+import com.vaadin.data.ValidationException;
+import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.v7.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.v7.data.fieldgroup.FieldGroup;
-import com.vaadin.v7.ui.DateField;
-import com.vaadin.v7.ui.TextField;
-import com.vaadin.v7.ui.TextArea;
-import com.vaadin.v7.ui.ComboBox;
-import org.vaadin.dialogs.ConfirmDialog;
+import net.sf.cglib.core.Local;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
-/* Create custom UI Components.
- *
- * Create your own Vaadin components by inheritance and composition.
- * This is a form component inherited from VerticalLayout. Use
- * Use BeanFieldGroup to bind data fields from DTO to UI fields.
- * Similarly named field by naming convention or customized
- * with @PropertyId annotation.
- */
-    public class PersonaForm extends FormLayout {
+public class PersonaForm extends FormLayout {
+    private Persona persona;
+    private Button save = new Button("Guardar");
+    // Button test = new Button("Test");
+    private DeleteButton delete = new DeleteButton("Eliminar",
+            VaadinIcons.WARNING, "Eliminar", "20%", new Button.ClickListener() {
+        @Override
+        public void buttonClick(Button.ClickEvent clickEvent) {
+            delete();
+        }
+    });
 
-        Button save = new Button("Guardar", this::save);
-        Button cancel = new Button("Cancelar", this::cancel);
-        Button delete = new Button("Eliminar", this::deleteConfirmationDialog);
+    private TextField nombre = new TextField("Nombre");
+    private TextField apellido = new TextField("Apellido");
+    private TextField DNI = new TextField("DNI");
+    private TextField telefono = new TextField("Celular");
+    private TextField telefono2 = new TextField("Telefono");
+    private TextField mail = new TextField("Mail");
+    private TextArea infoAdicional = new TextArea("Info");
 
+    private TextField CUIT = new TextField("CUIT/L");
 
-         TextField firstName = new TextField("Nombre");
-        TextField lastName = new TextField("Apellido");
-        TextField dni = new TextField("DNI");
-        TextField cuitl = new TextField("CUIL/T");
-        TextField mothersName = new TextField("Nombre Madre");
-        TextField fathersName = new TextField("Nombre Padre");
-        TextArea info=new TextArea("Informacion Adicional");
+    private TextField nombreMadre = new TextField("Nombre Madre");
 
+    private TextField nombrePadre = new TextField("Nombre Padre");
+    private RadioButtonGroup<Persona.Sex> sexo = new RadioButtonGroup<Persona.Sex>("Sexo");
+    private ComboBox<Persona.MaritalStatus> estadoCivil = new ComboBox<>("Estado Civil");
+    DateField fechaDeNac = new DateField("Fecha.de Nac");
+    TextField pais = new TextField("Pais");
+    private PersonaService personaService = new PersonaService();
+    private PersonaABMView addressbookView;
+    private Binder<Persona> binderPersona = new Binder<>(Persona.class);
 
-        ComboBox sex;
-        ComboBox countryofOrigin;
-        ComboBox maritalStatus;
+    // TabSheet
+    private FormLayout principal;
+    private FormLayout adicional;
+    private TabSheet personaFormTabSheet;
 
+    // Easily binding forms to beans and manage validation and buffering
 
+    public PersonaForm(PersonaABMView addressbook) {
+        // setSizeUndefined();
 
-
-
-
-        TextField mobilePhone = new TextField("Celular");
-        TextField phone = new TextField("Teléfono");
-        TextField email = new TextField("Mail");
-        DateField birthDate = new DateField("Fecha.de Nac");
-        Upload upload ;
-
-
-        ABMPersonaView ABMPersonaView;
-
-        Persona contact;
-
-        // Easily bind forms to beans and manage validation and buffering
-        BeanFieldGroup<Persona> formFieldBindings;
-
-
-    public PersonaForm(ABMPersonaView addressbook) {
-        ABMPersonaView =addressbook;
+        addressbookView = addressbook;
         configureComponents();
-        setMargin(true);
+        binding();
         buildLayout();
-        delete.setStyleName(ValoTheme.BUTTON_DANGER);
-        Responsive.makeResponsive(this);
-        addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
-        addStyleName("v-scrollable");
-        setHeight("100%");
+
     }
 
     private void configureComponents() {
-        /*
-         * Highlight primary actions.
-         *
-         * With Vaadin built-in styles you can highlight the primary save button
-         * and give it a keyboard shortcut for a better UX.
-         */
 
 
-
-       String[] locales=Locale.getISOCountries();
-       List <String> countries=new ArrayList<>();
-       Arrays.stream(locales).forEach(
-              country -> countries.add(new Locale("",country).getDisplayCountry()));
-
-
-
-       countryofOrigin=new ComboBox("Nacionalidad",countries);
-        maritalStatus=new ComboBox("Estado Civil",Arrays.asList( Persona.MaritalStatus.values()));
-        sex=new ComboBox("Sexo",Arrays.asList( Persona.Sex.values()));
-       countryofOrigin.setValue("Argentina");
-       maritalStatus.setValue(Persona.MaritalStatus.SOLTERO);
-      // sex.setValue(Persona.Sex.Masculino);
+        sexo=new RadioButtonGroup<>("Sexo",Arrays.asList( Persona.Sex.values()));
+        sexo.setStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+        estadoCivil.setItems(Persona.MaritalStatus.values());
+        // sex.setValue(Persona.Sex.Masculino);
+        estadoCivil.setValue(Persona.MaritalStatus.SOLTERO);
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        UploadReceiver upr=new UploadReceiver();
-        upload= new Upload("Subir DNI",upr);
-        upload.setButtonCaption("Subir");
 
         setVisible(false);
+
+
+
+
+        delete.setStyleName(ValoTheme.BUTTON_DANGER);
+        save.addClickListener(e -> this.save());
+        save.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+        setVisible(false);
+    }
+
+    private void binding() {
+        // binder.bindInstanceFields(this); //Binding automatico
+        nombre.setRequiredIndicatorVisible(true);
+        apellido.setRequiredIndicatorVisible(true);
+        mail.setRequiredIndicatorVisible(true);
+        telefono.setRequiredIndicatorVisible(true);
+        DNI.setRequiredIndicatorVisible(false);
+        binderPersona.forField(nombre).asRequired("Ingrese un nombre").bind(Persona::getFirstName, Persona::setFirstName);
+
+        binderPersona.forField(apellido).asRequired("Ingrese un apellido").bind(Persona::getLastName,
+                Persona::setLastName);
+
+        binderPersona.forField(DNI).bind(Persona::getDNI, Persona::setDNI);
+
+        binderPersona.forField(telefono).asRequired("Ingrese un teléfono").bind(Persona::getMobilePhone,
+                Persona::setMobilePhone);
+
+        binderPersona.forField(telefono2).bind(Persona::getPhone, Persona::setPhone);
+
+        binderPersona.forField(mail).withValidator(new EmailValidator(
+                "Introduzca un email valido!")).bind(Persona::getEmail, Persona::setEmail);
+
+        binderPersona.forField(CUIT).bind(Persona::getCuitl, Persona::setCuitl);
+
+        binderPersona.forField(sexo).bind(Persona::getSex,Persona::setSex);
+
+        binderPersona.forField(pais).bind(Persona::getCountryofOrigin,Persona::setCountryofOrigin);
+
+        binderPersona.forField(estadoCivil).bind(Persona::getMaritalStatus,Persona::setMaritalStatus);
+
+        binderPersona.forField(nombreMadre).bind(Persona::getMothersName,Persona::setMothersName);
+
+        binderPersona.forField(nombrePadre).bind(Persona::getFathersName,Persona::setFathersName);
+
+        binderPersona.forField(fechaDeNac).bind(persona -> {
+          Date fecha=persona.getBirthDate();
+            if(fecha!=null)
+                return fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            else{
+                return LocalDate.now();
+            }
+        },
+        (persona,fecha)->{
+            persona.setBirthDate(
+                    Date.from(fecha.atStartOfDay(ZoneId.systemDefault()).toInstant())
+            );
+        });
+
+
+
+        binderPersona.forField(infoAdicional).bind(Persona::getInfo, Persona::setInfo);
+
+
     }
 
     private void buildLayout() {
-        setSizeUndefined();
+        setSizeFull();
         setMargin(true);
-        TabSheet tabSheet=new TabSheet();
-        HorizontalLayout actions = new HorizontalLayout(save, cancel);
+
+        personaFormTabSheet = new TabSheet();
+
+
+        BlueLabel info = new BlueLabel("Información Adicional");
+        BlueLabel contacto = new BlueLabel("Contacto");
+
+
+
+        /*
+         * contratos.addClickListener(e -> new PersonaFormWindow(new Persona()));
+         */
+
+
+        principal = new FormLayout(nombre, apellido, DNI,fechaDeNac,sexo,estadoCivil);
+        FormLayout otro = new FormLayout(pais,CUIT,nombreMadre,nombrePadre,contacto, mail, telefono,telefono2);
+        adicional = new FormLayout(info, infoAdicional);
+
+
+        principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+        otro.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+        adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+
+
+        personaFormTabSheet.addTab(principal, "Principal");
+        personaFormTabSheet.addTab(otro, "Secundario");
+        personaFormTabSheet.addTab(adicional, "Adicional");
+
+        addComponent(personaFormTabSheet);
+        // HorizontalLayout actions = new HorizontalLayout(save,test,delete);
+        HorizontalLayout actions = new HorizontalLayout(save, delete);
         addComponent(actions);
+        this.setSpacing(false);
         actions.setSpacing(true);
-        VerticalLayout principal=new VerticalLayout( firstName, lastName, sex, birthDate,dni,cuitl,countryofOrigin,maritalStatus);
-        VerticalLayout contacto=new VerticalLayout( mothersName,fathersName,email,mobilePhone,phone);
-        VerticalLayout misc= new VerticalLayout(info,upload);
 
-        tabSheet.addTab(principal,"Basico");
-        tabSheet.addTab(contacto,"Contacto");
-        tabSheet.addTab(misc,"Misc.");
-
-
-
-         addComponent(tabSheet);
-
-         addComponent(delete);
+        // addStyleName("v-scrollable");
 
     }
 
-    /*
-     * Use any JVM language.
-     *
-     * Vaadin supports all languages supported by Java Virtual Machine 1.6+.
-     * This allows you to program user interface in Java 8, Scala, Groovy or any
-     * other language you choose. The new languages give you very powerful tools
-     * for organizing your code as you choose. For example, you can implement
-     * the listener methods in your compositions or in separate controller
-     * classes and receive to various Vaadin component events, like button
-     * clicks. Or keep it simple and compact with Lambda expressions.
-     */
-    public void save(Button.ClickEvent event) {
-        try {
-            // Commit the fields from UI to DAO
-            formFieldBindings.commit();
+    public void setPersona(Persona persona) {
 
-            // Save DAO to backend with direct synchronous service API
-            getABMPersonaView().service.save(contact);
 
-            String msg = String.format("Guardado '%s %s'.", contact.getFirstName(),
-                    contact.getLastName());
-            Notification.show(msg, Type.TRAY_NOTIFICATION);
-            getABMPersonaView().refreshContacts();
-        } catch (FieldGroup.CommitException e) {
-            // Validation exceptions could be shown here
-        }
-        getABMPersonaView().newContact.setVisible(true);
+        this.persona = persona;
+        binderPersona.readBean(persona);
+
+        // Show delete button for only Persons already in the database
+        delete.setVisible(persona.getId() != null);
+
+        setVisible(true);
+        getAddressbookView().setComponentsVisible(false);
+        nombre.selectAll();
+        if (getAddressbookView().isIsonMobile())
+            personaFormTabSheet.focus();
+
+        if(persona.getId()==null)
+            estadoCivil.setValue(Persona.MaritalStatus.SOLTERO);
+
+        else
+            estadoCivil.setValue(persona.getMaritalStatus());
+
+
     }
 
-    public void cancel(Button.ClickEvent event) {
-        // Place to call business logic.
-        Notification.show("Cancelado", Type.TRAY_NOTIFICATION);
-        getABMPersonaView().contactList.select(null);
+    private void delete() {
+        personaService.delete(persona);
+        addressbookView.updateList();
         setVisible(false);
-        getABMPersonaView().newContact.setVisible(true);
-    }
-
-
-
-    public void deleteConfirmationDialog(Button.ClickEvent event){
-        DialogConfirmacion dialog = new DialogConfirmacion("Eliminar Operacion",
-                VaadinIcons.WARNING,
-                "¿Esta seguro que desea eliminar esta operacion?",
-                "100px",
-                confirmacion -> {
-                   delete(event);
-                });
+        getAddressbookView().setComponentsVisible(true);
+        getAddressbookView().showSuccessNotification("Borrado: " + persona.getFirstName() + " " +
+                persona.getLastName());
 
     }
 
-    private void delete(Button.ClickEvent event) {
-            if(contact==null||contact.getId()==null){
-                String msg = String.format("No es posible eliminar");
-                Notification.show(msg, Type.TRAY_NOTIFICATION);
-                return;
-            }
-            getABMPersonaView().service.delete(contact);
 
-            String msg = String.format("Eliminado '%s %s'.", contact.getFirstName(),
-                    contact.getLastName());
-            Notification.show(msg, Type.TRAY_NOTIFICATION);
-            getABMPersonaView().refreshContacts();
-        getABMPersonaView().newContact.setVisible(true);
+    private void save() {
 
-    }
+        boolean success = false;
+        try {
+            binderPersona.writeBean(persona);
+            personaService.save(persona);
+            success = true;
 
-    void edit(Persona contact) {
-        this.contact = contact;
-        if (contact != null) {
-            // Bind the properties of the contact POJO to fiels in this form
-            formFieldBindings = BeanFieldGroup.bindFieldsBuffered(contact,
-                    this);
-            firstName.focus();
-            if(contact.getId()==null){
-                delete.setVisible(false);
-            }
-            else{
-                delete.setVisible(true);}
+        } catch (ValidationException e) {
+            Notification.show("Error al guardar, revise los campos");
 
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Notification.show("Error: " + e.toString());
         }
-        setVisible(contact != null);
-        getABMPersonaView().newContact.setVisible(contact == null);
+
+        addressbookView.updateList();
+        setVisible(false);
+        getAddressbookView().setComponentsVisible(true);
+
+        if (success)
+            getAddressbookView().showSuccessNotification("Guardado: " + persona.getFirstName()+
+                     " " +
+                    persona.getLastName());
 
     }
 
-    public ABMPersonaView getABMPersonaView() {
-        return ABMPersonaView;
+    public void cancel() {
+        addressbookView.updateList();
+        setVisible(false);
+        getAddressbookView().setComponentsVisible(true);
     }
 
+    public PersonaABMView getAddressbookView() {
+        return addressbookView;
+    }
 
 
 }
+
