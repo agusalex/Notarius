@@ -328,63 +328,63 @@
 					<artifactId>vaadin-maven-plugin</artifactId>
 					<version>8.2.1</version>
 					<configuration>
-						<extraJvmArgs>-Xmx1G -Xss1024k</extraJvmArgs>
-						<webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
-						<hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
-						<noServer>true</noServer>
-						<draftCompile>false</draftCompile>
-						<style>OBF</style>
-						<compileReport>true</compileReport>
-						<runTarget>http://localhost:8080/</runTarget>
-					</configuration>
-					<executions>
-						<execution>
-							<configuration>
-							</configuration>
-							<goals>
-								<goal>resources</goal>
-								<goal>update-theme</goal>
-								<goal>update-widgetset</goal>
-								<goal>compile-theme</goal>
-								<goal>compile</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
+				<!--<extraJvmArgs>-Xmx1G -Xss1024k</extraJvmArgs>-->
+                <webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
+                <hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
+                <noServer>true</noServer>
+                <draftCompile>false</draftCompile>
+                <style>OBF</style>
+                <compileReport>true</compileReport>
+                <runTarget>http://localhost:8080/</runTarget>
+            </configuration>
+            <executions>
+                <execution>
+                    <configuration>
+                    </configuration>
+                    <goals>
+                        <goal>resources</goal>
+                        <goal>update-theme</goal>
+                        <goal>update-widgetset</goal>
+                        <goal>compile-theme</goal>
+                        <goal>compile</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>3.1.0</version>
-					<configuration>
-						<webResources>
-							<webResource>
-								<directory>${basedir}/src/main/webapp/WEB-INF</directory>
-								<includes>
-									<include>*.xml</include>
-								</includes>
-								<targetPath>WEB-INF</targetPath>
-								<filtering>true</filtering>
-							</webResource>
-						</webResources>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>2.20.1</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>integration-test</goal>
-								<goal>verify</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.1.0</version>
+            <configuration>
+                <webResources>
+                    <webResource>
+                        <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+                        <includes>
+                            <include>*.xml</include>
+                        </includes>
+                        <targetPath>WEB-INF</targetPath>
+                        <filtering>true</filtering>
+                    </webResource>
+                </webResources>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.20.1</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>integration-test</goal>
+                        <goal>verify</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
 
-				<!-- The Jetty plugin allows us to easily test the development build by
-                    running jetty:run on the command line. -->
+        <!-- The Jetty plugin allows us to easily test the development build by
+            running jetty:run on the command line. -->
 				<plugin>
 					<groupId>org.eclipse.jetty</groupId>
 					<artifactId>jetty-maven-plugin</artifactId>
