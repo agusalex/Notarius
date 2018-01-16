@@ -8,7 +8,7 @@
 		<packaging>war</packaging>
 
 		<properties>
-			<productionMode>false</productionMode>
+			<productionMode>true</productionMode>
 			<vaadin.version>8.1.5</vaadin.version>
 			<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 			<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -59,7 +59,7 @@
 						<plugin>
 							<groupId>com.vaadin</groupId>
 							<artifactId>vaadin-maven-plugin</artifactId>
-							<version>8.2.1</version>
+							<version>${vaadin.plugin.version}</version>
 							<executions>
 								<execution>
 									<configuration>
@@ -289,6 +289,7 @@
 
 		</dependencies>
 
+
 		<build>
 			<plugins>
 				<plugin>
@@ -300,6 +301,32 @@
 							<nonFilteredFileExtension>jpg</nonFilteredFileExtension>
 						</nonFilteredFileExtensions>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eluder.coveralls</groupId>
+					<artifactId>coveralls-maven-plugin</artifactId>
+					<version>4.3.0</version>
+					<configuration>
+						<repoToken>OewS4g8cTtiXjGIWt9IH6kMMjiUKfv32F</repoToken>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.7.6.201602180812</version>
+					<configuration>
+						<excludes>
+							<exclude>**/com/TpFinal/view/*</exclude>
+						</excludes>
+					</configuration>
+					<executions>
+						<execution>
+							<id>prepare-agent</id>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -326,65 +353,65 @@
 				<plugin>
 					<groupId>com.vaadin</groupId>
 					<artifactId>vaadin-maven-plugin</artifactId>
-					<version>8.2.1</version>
+					<version>${vaadin.plugin.version}</version>
 					<configuration>
-				<!--<extraJvmArgs>-Xmx1G -Xss1024k</extraJvmArgs>-->
-                <webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
-                <hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
-                <noServer>true</noServer>
-                <draftCompile>false</draftCompile>
-                <style>OBF</style>
-                <compileReport>true</compileReport>
-                <runTarget>http://localhost:8080/</runTarget>
-            </configuration>
-            <executions>
-                <execution>
-                    <configuration>
-                    </configuration>
-                    <goals>
-                        <goal>resources</goal>
-                        <goal>update-theme</goal>
-                        <goal>update-widgetset</goal>
-                        <goal>compile-theme</goal>
-                        <goal>compile</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
+						<extraJvmArgs>-Xmx1G -Xss1024k</extraJvmArgs>
+						<webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
+						<hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
+						<noServer>true</noServer>
+						<draftCompile>false</draftCompile>
+						<style>OBF</style>
+						<compileReport>true</compileReport>
+						<runTarget>http://localhost:8080/</runTarget>
+					</configuration>
+					<executions>
+						<execution>
+							<configuration>
+							</configuration>
+							<goals>
+								<goal>resources</goal>
+								<goal>update-theme</goal>
+								<goal>update-widgetset</goal>
+								<goal>compile-theme</goal>
+								<goal>compile</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <version>3.1.0</version>
-            <configuration>
-                <webResources>
-                    <webResource>
-                        <directory>${basedir}/src/main/webapp/WEB-INF</directory>
-                        <includes>
-                            <include>*.xml</include>
-                        </includes>
-                        <targetPath>WEB-INF</targetPath>
-                        <filtering>true</filtering>
-                    </webResource>
-                </webResources>
-            </configuration>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.20.1</version>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>integration-test</goal>
-                        <goal>verify</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>3.1.0</version>
+					<configuration>
+						<webResources>
+							<webResource>
+								<directory>${basedir}/src/main/webapp/WEB-INF</directory>
+								<includes>
+									<include>*.xml</include>
+								</includes>
+								<targetPath>WEB-INF</targetPath>
+								<filtering>true</filtering>
+							</webResource>
+						</webResources>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.20.1</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 
-        <!-- The Jetty plugin allows us to easily test the development build by
-            running jetty:run on the command line. -->
+				<!-- The Jetty plugin allows us to easily test the development build by
+                    running jetty:run on the command line. -->
 				<plugin>
 					<groupId>org.eclipse.jetty</groupId>
 					<artifactId>jetty-maven-plugin</artifactId>
