@@ -59,7 +59,7 @@
 						<plugin>
 							<groupId>com.vaadin</groupId>
 							<artifactId>vaadin-maven-plugin</artifactId>
-							<version>${vaadin.plugin.version}</version>
+							<version>8.2.1</version>
 							<executions>
 								<execution>
 									<configuration>
@@ -289,7 +289,6 @@
 
 		</dependencies>
 
-
 		<build>
 			<plugins>
 				<plugin>
@@ -301,32 +300,6 @@
 							<nonFilteredFileExtension>jpg</nonFilteredFileExtension>
 						</nonFilteredFileExtensions>
 					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.eluder.coveralls</groupId>
-					<artifactId>coveralls-maven-plugin</artifactId>
-					<version>4.3.0</version>
-					<configuration>
-						<repoToken>OewS4g8cTtiXjGIWt9IH6kMMjiUKfv32F</repoToken>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.7.6.201602180812</version>
-					<configuration>
-						<excludes>
-							<exclude>**/com/TpFinal/view/*</exclude>
-						</excludes>
-					</configuration>
-					<executions>
-						<execution>
-							<id>prepare-agent</id>
-							<goals>
-								<goal>prepare-agent</goal>
-							</goals>
-						</execution>
-					</executions>
 				</plugin>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -353,7 +326,7 @@
 				<plugin>
 					<groupId>com.vaadin</groupId>
 					<artifactId>vaadin-maven-plugin</artifactId>
-					<version>${vaadin.plugin.version}</version>
+					<version>8.2.1</version>
 					<configuration>
 						<extraJvmArgs>-Xmx1G -Xss1024k</extraJvmArgs>
 						<webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
