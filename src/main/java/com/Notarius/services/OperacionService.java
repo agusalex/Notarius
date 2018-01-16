@@ -4,7 +4,10 @@ package com.Notarius.services;
 import com.Notarius.data.dao.DAO;
 import com.Notarius.data.dao.DAOImpl;
 import com.Notarius.data.dto.Operacion;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.*;
 
+import java.io.*;
 import java.util.*;
 
 /** Separate Java service class.
@@ -34,16 +37,55 @@ public class OperacionService {
     private HashMap<Long, Operacion> Operacions = new HashMap<>();
 
 
+    public void ImportJson() {
+        final JsonParser parser = new JsonParser();
+        JsonElement jsonElement = null;
+        try {
+            jsonElement = parser.parse(new FileReader("operaciones.json"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        DAO<Operacion> dao=new DAOImpl<Operacion>(Operacion.class);
+        final JsonArray jsonArray = jsonElement.getAsJsonArray();
+        //RESULTS
+        for (JsonElement operacion : jsonArray) {
+            JsonObject jsonObject = operacion.getAsJsonObject();
+            Gson gson = new Gson();
+            Operacion op = gson.fromJson(jsonObject, Operacion.class);
+            dao.save(op);
+            System.out.println(op);
+
+
+        }
+    }
+
+        public void exportJson(){
+        DAO<Operacion> dao=new DAOImpl<Operacion>(Operacion.class);
+
+
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json = gson.toJson(dao.readAll());
+            try{
+                FileWriter writer = new FileWriter("operaciones.json");
+                writer.write(json);
+                writer.close();
+            }
+            catch(Exception e) {
+                e.printStackTrace ( );
+            }
+        }
+
+
+
+
     public synchronized List<Operacion> findAll(String stringFilter) {
         ArrayList<Operacion> ret = new ArrayList<>();
         DAO<Operacion> dao=new DAOImpl<Operacion>(Operacion.class);
         ArrayList<Operacion> Operacions=( ArrayList<Operacion>)dao.readAll();
-        System.out.println("db:");
-        Operacions.forEach(e-> System.out.println(e.toString()));
+
 
         for (int i = 0; i <Operacions.size() ; i++) {
             Operacion operacion=Operacions.get(i);
-            System.out.println("Operacion:"+i+" "+operacion);
 
                 boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
                                         || operacion.toString().toLowerCase()

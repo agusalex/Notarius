@@ -22,6 +22,8 @@ public class Utils {
     }
 
 
+
+
    public static ArrayList<Operacion> Search(List<Operacion>operacions,String keyword) {
 
         ArrayList<Operacion> ret = new ArrayList<Operacion>();

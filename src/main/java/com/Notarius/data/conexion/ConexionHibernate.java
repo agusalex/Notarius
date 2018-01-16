@@ -23,7 +23,14 @@ public class ConexionHibernate {
 		//La ultima property es para que no crashee el add lo saque de aca:
 		// https://stackoverflow.com/questions/32968527/hibernate-sequence-doesnt-exist
 		//PD Misael estaria orgulloso :)
-
+/*configuration
+		 		.configure()
+				.setProperty(Environment.DIALECT, "org.hibernate.dialect.MariaDB53Dialect")
+				.setProperty(Environment.DRIVER, "org.mariadb.jdbc.Driver")
+				.setProperty(Environment.URL, "jdbc:mariadb://192.168.1.100:3306/Notarius")
+				.setProperty(Environment.USER, "root")
+				.setProperty(Environment.PASS, "");
+				/*.setProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS, "false");*/
 
 
 
@@ -33,7 +40,7 @@ public class ConexionHibernate {
 		 		.configure()
 				.setProperty(Environment.DIALECT, "org.hibernate.dialect.H2Dialect")
 				.setProperty(Environment.DRIVER, "org.h2.Driver")
-				.setProperty(Environment.URL, "jdbc:h2:~//Notariu;AUTO_SERVER=TRUE")
+				.setProperty(Environment.URL, "jdbc:h2:~//Notarius;AUTO_SERVER=TRUE")
 				.setProperty(Environment.USER, "root")
 				.setProperty(Environment.PASS, "root")
 				.setProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS, "false");
