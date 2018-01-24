@@ -8,10 +8,16 @@ import com.Notarius.services.MovimientoService;
 import com.Notarius.view.component.DeleteButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
+import com.vaadin.data.converter.StringToBigDecimalConverter;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 /*
 	@Column(name = "descripcionMovimiento")
 	private String descripcionMovimiento;
@@ -36,7 +42,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 public class MovimientoForm extends FormLayout {
 
-    private Movimiento Movimiento;
+    private Movimiento movimiento;
     Button save = new Button("Guardar");
     TextField descripcion = new TextField("Descripcion");
     TextField monto = new TextField("Monto");
@@ -96,32 +102,55 @@ public class MovimientoForm extends FormLayout {
         descripcion.setRequiredIndicatorVisible(true);
 
         monto.setRequiredIndicatorVisible(true);
+        binderMovimiento.forField(monto).withNullRepresentation("0").asRequired("Ingrese un Monto")
+                .withConverter(new StringToBigDecimalConverter("Debe ingresar un numero de monto correcto"))
+                .bind(Movimiento::getMonto,Movimiento::setMonto);
+        binderMovimiento.forField(descripcion).asRequired("Ingrese un Asunto").bind(Movimiento::getDescripcionMovimiento,Movimiento::setDescripcionMovimiento);
+        binderMovimiento.forField(tipo).asRequired("Seleccione un tipo de movimiento").bind(Movimiento::getTipoMovimiento,Movimiento::setTipoMovimiento);
+        clase.setEmptySelectionAllowed(false);
+        binderMovimiento.forField(clase).asRequired("Seleccione un clase").bind(Movimiento::getClaseMovimiento,Movimiento::setClaseMovimiento);
+        tipo.setEmptySelectionAllowed(false);
+        binderMovimiento.forField(fecha).bind(movimiento -> {
+                    Date fecha=movimiento.getFecha();
+                    if(fecha!=null)
+                        return fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    else{
+                        return LocalDate.now();
+                    }
+                },
+                (persona,fecha)->{
+                    persona.setFecha(
+                            Date.from(fecha.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    );
+                });
+        binderMovimiento.forField(moneda).asRequired("Seleccione una moneda").bind(Movimiento::getTipoMoneda,Movimiento::setTipoMoneda);
+        moneda.setEmptySelectionAllowed(false);
 
     /*    binderMovimiento.forField(monto).withNullRepresentation("").
                 asRequired("Ingrese Una Carpeta")
                 .withConverter(new StringToIntegerConverter(
                         "Debe ingresar un numero de monto correcto"))
                 .withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-                .bind(Movimiento::getCarpeta,Movimiento::setCarpeta);
+                .bind(movimiento::getCarpeta,movimiento::setCarpeta);
 
-        binderMovimiento.forField(descripcion).asRequired("Ingrese un Asunto").bind(Movimiento::getAsunto,Movimiento::setAsunto);
+        binderMovimiento.forField(descripcion).asRequired("Ingrese un Asunto").bind(movimiento::getAsunto,movimiento::setAsunto);
         tipo.setEmptySelectionAllowed(false);
-        binderMovimiento.forField(tipo).asRequired("Seleccione un tipo de Movimiento").bind(Movimiento::getTipo,Movimiento::setTipo);
+        binderMovimiento.forField(tipo).asRequired("Seleccione un tipo de movimiento").bind(movimiento::getTipo,movimiento::setTipo);
         clase.setEmptySelectionAllowed(false);
-        binderMovimiento.forField(clase).asRequired("Seleccione un clase").bind(Movimiento::getEstado,Movimiento::setEstado);
+        binderMovimiento.forField(clase).asRequired("Seleccione un clase").bind(movimiento::getEstado,movimiento::setEstado);
 
         binderMovimiento.bindInstanceFields(this); //Binding automatico*/
-       /* binderMovimiento.forField(nombre).asRequired("Ingrese un nombre").bind(Movimiento::getNombre,Movimiento::setNombre);
+       /* binderMovimiento.forField(nombre).asRequired("Ingrese un nombre").bind(movimiento::getNombre,movimiento::setNombre);
 
-        binderMovimiento.forField(apellido).asRequired("Ingrese un apellido").bind(Movimiento::getApellido,Movimiento::setApellido);
+        binderMovimiento.forField(apellido).asRequired("Ingrese un apellido").bind(movimiento::getApellido,movimiento::setApellido);
 
 
 
-        binderMovimiento.forField(telefono).asRequired("Ingrese un teléfono").bind(Movimiento::getTelefono,Movimiento::setTelefono);
+        binderMovimiento.forField(telefono).asRequired("Ingrese un teléfono").bind(movimiento::getTelefono,movimiento::setTelefono);
 
 
         binderMovimiento.forField(mail).withValidator(new EmailValidator(
-                "Introduzca un email valido!" )).bind(Movimiento::getMail,Movimiento::setMail);
+                "Introduzca un email valido!" )).bind(movimiento::getMail,movimiento::setMail);
         */
 
     }
@@ -132,7 +161,7 @@ public class MovimientoForm extends FormLayout {
         tabSheet=new TabSheet();
 
      /*   contratos.addClickListener(e ->
-                new MovimientoFormWindow(new Movimiento()));*/
+                new MovimientoFormWindow(new movimiento()));*/
         FormLayout principal=new FormLayout(tipo,monto,moneda,clase ,fecha,descripcion);
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         tabSheet.addTab(principal,"Principal");
@@ -151,17 +180,17 @@ public class MovimientoForm extends FormLayout {
 
 
     public void setMovimiento(Movimiento Movimiento) {
-   /*   if(Movimiento.getInquilino()!=null){
+   /*   if(movimiento.getInquilino()!=null){
             this.calificacion.setVisible(true);
             calificacion.setSelectedItem(Calificacion.A);
-            this.calificacion.setSelectedItem(Movimiento.getInquilino().getCalificacion());
+            this.calificacion.setSelectedItem(movimiento.getInquilino().getCalificacion());
         }
         else{
             this.calificacion.setVisible(false);
         }*/
 
 
-        this.Movimiento = Movimiento;
+        this.movimiento = Movimiento;
         binderMovimiento.readBean(Movimiento);
 
         // Show delete button for only Persons already in the database
@@ -182,11 +211,11 @@ public class MovimientoForm extends FormLayout {
     public void delete() {
 
 
-        service.delete(Movimiento);
+        service.delete(movimiento);
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
-        getAddressbookView().showSuccessNotification("Borrado: " + Movimiento.toString());
+        getAddressbookView().showSuccessNotification("Borrado: " + movimiento.toString());
 
 
 
@@ -202,8 +231,8 @@ public class MovimientoForm extends FormLayout {
 
         boolean success=false;
         try {
-            binderMovimiento.writeBean(Movimiento);
-            service.save(Movimiento);
+            binderMovimiento.writeBean(movimiento);
+            service.save(movimiento);
             success=true;
 
 
@@ -219,8 +248,8 @@ public class MovimientoForm extends FormLayout {
         }
 
         addressbookView.updateList();
-       /* String msg = String.format("Guardado '%s %s'.", Movimiento.getNombre(),
-                Movimiento.getApellido());*
+       /* String msg = String.format("Guardado '%s %s'.", movimiento.getNombre(),
+                movimiento.getApellido());*
         Notification.show(msg, Type.TRAY_NOTIFICATION);*/
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
@@ -228,7 +257,7 @@ public class MovimientoForm extends FormLayout {
 
         if(success)
             getAddressbookView().showSuccessNotification("Guardado: "
-                    + Movimiento.toString());
+                    + movimiento.toString());
 
 
     }

@@ -2,6 +2,7 @@ package com.Notarius.data.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -30,7 +31,7 @@ public class Movimiento implements Identificable{
 	private BigDecimal monto;
 
 	@Column(name = "fecha")
-	private LocalDate fecha;
+	private Date fecha;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipoMovimiento")
@@ -64,7 +65,7 @@ public class Movimiento implements Identificable{
 
 		private String descripcionMovimiento;
 		private BigDecimal monto;
-		private LocalDate fecha;
+		private Date fecha;
 		private TipoMovimiento tipoMovimiento;
 		private ClaseMovimiento claseMovimiento;
 		private TipoMoneda tipoMoneda;
@@ -79,7 +80,7 @@ public class Movimiento implements Identificable{
 			return this;
 		}
 
-		public Builder setFecha(LocalDate fecha) {
+		public Builder setFecha(Date fecha) {
 			this.fecha = fecha;
 			return this;
 		}
@@ -134,11 +135,11 @@ public class Movimiento implements Identificable{
 		this.monto = monto;
 	}
 
-	public LocalDate getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(LocalDate fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 

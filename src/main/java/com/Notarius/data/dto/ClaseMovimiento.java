@@ -7,7 +7,6 @@ public enum ClaseMovimiento {
     Deposito,
 	Sellado,
 	Venta,
-	Alquiler,
 	Otro,
 	PagoAPropietario,
 	Impuesto,

@@ -29,7 +29,7 @@ import java.util.List;
  * the same instance, add @PreserveOnRefresh.
  */
 
-@Title("Addressbook")
+@Title("Movimientos")
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class MovimientoABMView extends DefaultLayout implements View {
@@ -106,7 +106,7 @@ public class MovimientoABMView extends DefaultLayout implements View {
 
 
 
-       // grid.setColumns("tipoMovimiento", "monto", "tipoMoneda","claseMovimiento","fecha");
+        grid.setColumns("tipoMovimiento", "monto", "tipoMoneda","claseMovimiento","descripcionMovimiento");
 
 
        /* grid.setStyleGenerator(movimiento -> {
@@ -185,7 +185,7 @@ public class MovimientoABMView extends DefaultLayout implements View {
         hl.addComponent(filtering);
 
 
-        buildToolbar("Movimientoes",hl);
+        buildToolbar("Movimientos",hl);
         grid.setSizeFull();
         mainLayout = new HorizontalLayout(grid, movimientoForm);
         mainLayout.setSizeFull();
