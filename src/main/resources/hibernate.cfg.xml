@@ -28,6 +28,7 @@
 		<mapping class="com.Notarius.data.dto.Persona" />
 		<mapping class="com.Notarius.data.dto.DomicilioDTO" />
 		<mapping class="com.Notarius.data.dto.Operacion" />
+		<mapping class="com.Notarius.data.dto.Movimiento" />
 		<mapping class="com.Notarius.data.dto.Notas" />
 
 

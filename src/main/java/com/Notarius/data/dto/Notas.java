@@ -16,6 +16,16 @@ public class Notas implements Identificable{
     public Notas() {
     }
 
+    @Override
+    public boolean isBorrado() {
+        return false;
+    }
+
+    @Override
+    public void setBorrado(boolean b) {
+
+    }
+
     public Long getId() {
         return id;
     }

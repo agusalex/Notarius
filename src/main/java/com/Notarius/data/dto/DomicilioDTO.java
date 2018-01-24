@@ -56,6 +56,16 @@ public class DomicilioDTO implements Identificable {
 	}
 
 	@Override
+	public boolean isBorrado() {
+		return false;
+	}
+
+	@Override
+	public void setBorrado(boolean b) {
+
+	}
+
+	@Override
 	public Long getId() {
 		// TODO Auto-generated method stub
 		return null;
