@@ -29,14 +29,14 @@ configuration
 				.setProperty(Environment.DRIVER, "org.mariadb.jdbc.Driver")
 				.setProperty(Environment.URL, "jdbc:mariadb://192.168.1.100:3306/Notarius")
 				.setProperty(Environment.USER, "root")
-				.setProperty(Environment.PASS, "");
-				/*.setProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS, "false");*/
+				.setProperty(Environment.PASS, "")
+				.setProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS, "false");
+
 
 
 
 
 /*
-		 configuration
 		 		.configure()
 				.setProperty(Environment.DIALECT, "org.hibernate.dialect.H2Dialect")
 				.setProperty(Environment.DRIVER, "org.h2.Driver")

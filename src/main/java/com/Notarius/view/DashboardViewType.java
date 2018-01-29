@@ -3,6 +3,7 @@ package com.Notarius.view;
 import com.Notarius.view.adressbook.PersonaABMView;
 import com.Notarius.view.dashboard.DashboardView;
 
+import com.Notarius.view.movimiento.MovimientoABMView;
 import com.Notarius.view.operacion.OperacionABMView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -12,7 +13,8 @@ import com.vaadin.server.Resource;
 public enum DashboardViewType {
     INICIO("Inicio", DashboardView.class, FontAwesome.HOME, true),PERSONAS(
             "Personas", PersonaABMView.class, FontAwesome.USERS, false),OPERACIONES(
-            "Operaciones", OperacionABMView.class, VaadinIcons.HANDSHAKE, false) ;
+            "Operaciones", OperacionABMView.class, VaadinIcons.HANDSHAKE, false),MOVIMIENTOS(
+            "Movimientos", MovimientoABMView.class, VaadinIcons.ABACUS, false) ;
 
     private final String viewName;
     private final Class<? extends View> viewClass;
