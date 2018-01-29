@@ -95,8 +95,6 @@ public class PersonaForm extends FormLayout {
         // binder.bindInstanceFields(this); //Binding automatico
         nombre.setRequiredIndicatorVisible(true);
         apellido.setRequiredIndicatorVisible(true);
-        mail.setRequiredIndicatorVisible(true);
-        telefono.setRequiredIndicatorVisible(true);
         DNI.setRequiredIndicatorVisible(false);
         binderPersona.forField(nombre).asRequired("Ingrese un nombre").bind(Persona::getFirstName, Persona::setFirstName);
 
@@ -105,13 +103,12 @@ public class PersonaForm extends FormLayout {
 
         binderPersona.forField(DNI).bind(Persona::getDNI, Persona::setDNI);
 
-        binderPersona.forField(telefono).asRequired("Ingrese un teléfono").bind(Persona::getMobilePhone,
+        binderPersona.forField(telefono).bind(Persona::getMobilePhone,
                 Persona::setMobilePhone);
 
         binderPersona.forField(telefono2).bind(Persona::getPhone, Persona::setPhone);
 
-        binderPersona.forField(mail).withValidator(new EmailValidator(
-                "Introduzca un email valido!")).bind(Persona::getEmail, Persona::setEmail);
+        binderPersona.forField(mail).bind(Persona::getEmail, Persona::setEmail);
 
         binderPersona.forField(CUIT).bind(Persona::getCuitl, Persona::setCuitl);
 

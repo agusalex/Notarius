@@ -1,6 +1,6 @@
 package com.Notarius.data.dto;
 
-public final class User {
+public  class User {
     private String role;
     private String firstName;
     private String lastName;

@@ -46,6 +46,8 @@ public class Movimiento implements Identificable{
 	private TipoMoneda tipoMoneda;
 	@Column(name = "borrado")
 	boolean borrado;
+	@Column(name = "usuario")
+	private String username;
 
 
 	public Movimiento() {
