@@ -11,7 +11,7 @@ public class DeleteButton extends CustomComponent {
          *
          */
         private static final long serialVersionUID = 1L;
-        private final Label infoLabel = new Label("", ContentMode.HTML);
+        private final Label infoLabel = new Label("Eliminar", ContentMode.HTML);
         private final Button yesButton = new Button("Eliminar", VaadinIcons.CHECK);
         private final Button noButton = new Button("Cancelar", VaadinIcons.CLOSE);
         private final Window window = new Window();
@@ -69,6 +69,7 @@ public class DeleteButton extends CustomComponent {
 	    button = new Button(caption, icon);
             button.setSizeFull();
             button.addStyleName(ValoTheme.BUTTON_DANGER);
+            button.setIcon(VaadinIcons.TRASH);
             button.addClickListener(e -> {
                 if (window.getParent() == null) {
                     UI.getCurrent().addWindow(window);

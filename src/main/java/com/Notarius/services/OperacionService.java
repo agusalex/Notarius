@@ -6,6 +6,8 @@ import com.Notarius.data.dao.DAOImpl;
 import com.Notarius.data.dto.Operacion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.*;
+import com.vaadin.server.Resource;
+import com.vaadin.server.StreamResource;
 
 import java.io.*;
 import java.util.*;
@@ -143,4 +145,21 @@ public class OperacionService {
         dao.save(entry);
     }
 
+    public static Resource GenerarStreamResource(String path) {
+        if (new File("Files" + File.separator + path).exists()) {
+            StreamResource str = new StreamResource(new StreamResource.StreamSource() {
+                @Override
+                public InputStream getStream() {
+                    try {
+                        return new FileInputStream("Files" + File.separator + path);
+                    } catch (FileNotFoundException e) {
+                        System.out.println("Error al Buscar Foto: " + path);
+                    }
+                    return null;
+                }
+            }, "Files" + File.separator + path);
+            return str;
+        }
+        return null;
+    }
 }

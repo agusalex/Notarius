@@ -16,7 +16,7 @@
 		<property name="hibernate.c3p0.max_statements">50</property>
 		<property name="hibernate.c3p0.acquire_increment">1</property>
 		<property name="hibernate.c3p0.idle_test_period">3000</property>
-		<property name="hibernate.hbm2ddl.update"> update</property>
+		<property name="hibernate.hbm2ddl.auto"> update</property>
 		<!-- crea o actualiza las tablas-->
 
 

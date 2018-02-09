@@ -21,8 +21,39 @@ public class Utils {
         return lines.length;
     }
 
+    public static String removeFileExtension(String strFilename) {
+        int j;
+        String ret = strFilename;
 
 
+        int index;
+        if (strFilename.contains(".mv.db")) {
+            index = ret.lastIndexOf('.');
+            if (index != -1)
+                ret = ret.substring(0, ret.lastIndexOf('.'));
+        }
+
+        index = ret.lastIndexOf('.');
+        if (index != -1)
+            ret = ret.substring(0, ret.lastIndexOf('.'));
+
+
+
+        return ret;
+
+    }
+    public static String getFileExtension(String strFilename) {
+        int j;
+        String ret = strFilename;
+
+        int index = ret.lastIndexOf('.');
+        if (index != -1)
+            ret = ret.substring(index);
+
+
+
+        return ret;
+    }
 
    public static ArrayList<Operacion> Search(List<Operacion>operacions,String keyword) {
 

@@ -4,7 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "operacion")
@@ -32,9 +34,32 @@ public class Operacion implements Serializable,Identificable{
     @Column(name = "carpeta")
     private Integer carpeta;
 
+    public Set<String> getPathImagenes() {
+        return pathImagenes;
+    }
+
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @JoinTable(name = "paths_imagenes", joinColumns = @JoinColumn(name = "idOperacion"))
+    private Set<String> pathImagenes = new HashSet<>();
+
+
+    public void removePathImagen(String path) {
+        for (String candidate: pathImagenes
+             ) {
+            if(path.equals(candidate))
+                pathImagenes.remove(candidate);
+        }
+
+    }
+
+    public void addPathImagen(String s) {
+        pathImagenes.add(s);
+    }
+
 
     public enum Estado {
-        Iniciada,Finalizada,Descartada;
+        Iniciada,Inscripta,Finalizada,Descartada;
         public static List<Estado> toList() {
             Estado[] clases = Estado.values();
             List<Estado> ret = new ArrayList<>();

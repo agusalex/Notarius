@@ -3,11 +3,13 @@ package com.Notarius.view.operacion;
 import com.Notarius.data.dto.Operacion;
 import com.Notarius.services.OperacionService;
 import com.Notarius.view.component.DeleteButton;
+import com.Notarius.view.component.ImagenesInmuebleWindow;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -35,7 +37,17 @@ public class OperacionForm extends FormLayout {
     private OperacionABMView addressbookView;
     private Binder<Operacion> binderOperacion = new Binder<>(Operacion.class);
     TabSheet tabSheet;
+    private Button imageManager = new Button("Imagenes", e -> new ImagenesInmuebleWindow(operacion) {
+        @Override
+        public void onClose() {
+            if(!operacion.getPathImagenes().isEmpty())
+                if(operacion.getEstado().equals(Operacion.Estado.Iniciada)) {
+                    operacion.setEstado(Operacion.Estado.Inscripta);
+                    estado.setSelectedItem(Operacion.Estado.Inscripta);
+                }
 
+        }
+    });
     // Easily binding forms to beans and manage validation and buffering
 
 
@@ -115,10 +127,10 @@ public class OperacionForm extends FormLayout {
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         tabSheet.addTab(principal,"Principal");
 
-
+        imageManager.setIcon(VaadinIcons.CAMERA);
         addComponent(tabSheet);
         //HorizontalLayout actions = new HorizontalLayout(save,test,delete);
-        HorizontalLayout actions = new HorizontalLayout(save,delete);
+        HorizontalLayout actions = new HorizontalLayout(save,delete,imageManager);
         addComponent(actions);
         this.setSpacing(false);
         actions.setSpacing(true);
@@ -129,20 +141,12 @@ public class OperacionForm extends FormLayout {
 
 
     public void setOperacion(Operacion Operacion) {
-   /*   if(operacion.getInquilino()!=null){
-            this.calificacion.setVisible(true);
-            calificacion.setSelectedItem(Calificacion.A);
-            this.calificacion.setSelectedItem(operacion.getInquilino().getCalificacion());
-        }
-        else{
-            this.calificacion.setVisible(false);
-        }*/
 
 
         this.operacion = Operacion;
         binderOperacion.readBean(Operacion);
 
-        // Show delete button for only Persons already in the database
+
         delete.setVisible(Operacion.getId()!=null);
 
         setVisible(true);

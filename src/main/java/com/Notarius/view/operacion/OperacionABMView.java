@@ -72,8 +72,7 @@ public class OperacionABMView extends DefaultLayout implements View {
         UI.getCurrent().getPage().getStyles().add(".v-grid-row.finalizada {color: darkgreen;}" +
                 "}");
         UI.getCurrent().getPage().getStyles().add(".v-grid-row.descartada {color: darkred;}");
-
-
+        UI.getCurrent().getPage().getStyles().add(".v-grid-row.inscripta {color: darkblue;}");
     }
 
 
@@ -117,6 +116,9 @@ public class OperacionABMView extends DefaultLayout implements View {
                }
                else  if (operacion.getEstado().equals(Operacion.Estado.Descartada)) {
                    ret = "descartada";
+               }
+               else  if (operacion.getEstado().equals(Operacion.Estado.Inscripta)) {
+                   ret = "inscripta";
                }
            }
            return ret;
