@@ -69,7 +69,7 @@ public abstract class ImagenesInmuebleWindow extends Window {
 	this.operacion = operacion;
 	refreshListSelect();
 	configureComponents();
-
+	addStyleName("v-scrollable");
 	select.setItems(operacion.getPathImagenes());
 	select.setRows(4);
 	select.setResponsive(true);
