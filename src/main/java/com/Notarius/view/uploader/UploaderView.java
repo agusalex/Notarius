@@ -46,7 +46,6 @@ public class UploaderView extends DefaultLayout implements View {
     TextField filter = new TextField();
     private Grid<Operacion> grid = new Grid<>(Operacion.class);
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
-    RadioButtonGroup<String> filtroRoles= new RadioButtonGroup<>();
 
 
 
@@ -87,6 +86,7 @@ public class UploaderView extends DefaultLayout implements View {
         filter.setValueChangeMode(ValueChangeMode.LAZY);
         filter.setPlaceholder("Filtrar");
         filter.setIcon(VaadinIcons.SEARCH);
+        filter.setStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
         filter.addValueChangeListener(e -> updateList());
         clearFilterTextBtn.setDescription("Limpiar filtro");
         clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
@@ -99,16 +99,17 @@ public class UploaderView extends DefaultLayout implements View {
               new ImageUploader(operacion) {
                   @Override
                   public void onClose() {
-                      if(operacion.getPathImagenes().size()>0)
+                      if(operacion.getPathImagenes().size()>0){
                         operacion.setEstado(Operacion.Estado.Inscripta);
+                        showSuccessNotification("Carpeta"+operacion.getCarpeta()+" Inscripta!");
+                      }
                       OperacionService.getService().save(operacion);
                       updateList();
                   }
               };
         });
-
-        if(isonMobile){
-            filter.setWidth("100%");
+        if(isMobile()){
+            filter.setSizeFull();
         }
         updateList();
     }
@@ -184,9 +185,21 @@ public class UploaderView extends DefaultLayout implements View {
         // navigated to so we'll need to clean up references to it on detach.
 
     }
+    public boolean isMobile(){
+        if (Page.getCurrent().getBrowserWindowWidth() <= 1000) {
+
+            return true;
+        }
+        else{
+            return false;
+
+        }
+    }
+
+
     @Subscribe
     public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {
-        if (Page.getCurrent().getBrowserWindowWidth() < 800) {
+        if (Page.getCurrent().getBrowserWindowWidth() <= 1000) {
 
             isonMobile=true;
         }
@@ -199,6 +212,16 @@ public class UploaderView extends DefaultLayout implements View {
 
     @Override
     public void enter(final ViewChangeListener.ViewChangeEvent event) {
+        if (Page.getCurrent().getBrowserWindowWidth() <= 1000) {
+            System.out.printf("Width" +
+                    Page.getCurrent().getBrowserWindowWidth());
+
+            isonMobile=true;
+        }
+        else{
+            isonMobile=false;
+
+        }
     }
 
 

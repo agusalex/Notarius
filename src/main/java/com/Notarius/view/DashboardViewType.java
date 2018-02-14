@@ -15,7 +15,7 @@ public enum DashboardViewType {
     INICIO("Inicio", DashboardView.class, FontAwesome.HOME, true),PERSONAS(
             "Personas", PersonaABMView.class, FontAwesome.USERS, false),OPERACIONES(
             "Operaciones", OperacionABMView.class, VaadinIcons.HANDSHAKE, false),MOVIMIENTOS(
-            "Movimientos", MovimientoABMView.class, VaadinIcons.ABACUS, false);
+            "Movimientos", MovimientoABMView.class, VaadinIcons.ABACUS, false),UPLOADER("Uploader",UploaderView.class,VaadinIcons.UPLOAD,false);
 
     private final String viewName;
     private final Class<? extends View> viewClass;
