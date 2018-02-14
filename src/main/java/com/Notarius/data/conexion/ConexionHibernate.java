@@ -11,7 +11,7 @@ import org.hibernate.service.ServiceRegistry;
 public class ConexionHibernate {
 	private static Configuration configuration = new Configuration();
 	private static SessionFactory sf=null;
-	
+	static boolean  debugDB=false;
 	
 	
 	private static Configuration getConfiguration() {
@@ -27,14 +27,15 @@ public class ConexionHibernate {
 				.setProperty(Environment.PASS, "")
 				.setProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS, "false");
 
-/*
-		 		.configure()
-				.setProperty(Environment.DIALECT, "org.hibernate.dialect.H2Dialect")
-				.setProperty(Environment.DRIVER, "org.h2.Driver")
-				.setProperty(Environment.URL, "jdbc:h2:~//Notariu;AUTO_SERVER=TRUE")
-				.setProperty(Environment.USER, "root")
-				.setProperty(Environment.PASS, "root")
-				.setProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS, "false");*/
+       if(debugDB){
+		   configuration.configure()
+				   .setProperty(Environment.DIALECT, "org.hibernate.dialect.H2Dialect")
+				   .setProperty(Environment.DRIVER, "org.h2.Driver")
+				   .setProperty(Environment.URL, "jdbc:h2:~//Notariu;AUTO_SERVER=TRUE")
+				   .setProperty(Environment.USER, "root")
+				   .setProperty(Environment.PASS, "root")
+				   .setProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS, "false");
+	   }
 		return configuration;
 	}
 	

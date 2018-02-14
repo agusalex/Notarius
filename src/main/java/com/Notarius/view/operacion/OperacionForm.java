@@ -3,16 +3,14 @@ package com.Notarius.view.operacion;
 import com.Notarius.data.dto.Operacion;
 import com.Notarius.services.OperacionService;
 import com.Notarius.view.component.DeleteButton;
-import com.Notarius.view.component.ImagenesInmuebleWindow;
+import com.Notarius.view.component.ImageUploader;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.Resource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.dialogs.ConfirmDialog;
 
 import java.time.LocalDate;
 
@@ -37,7 +35,7 @@ public class OperacionForm extends FormLayout {
     private OperacionABMView addressbookView;
     private Binder<Operacion> binderOperacion = new Binder<>(Operacion.class);
     TabSheet tabSheet;
-    private Button imageManager = new Button("Imagenes", e -> new ImagenesInmuebleWindow(operacion) {
+    private Button imageManager = new Button("Imagenes", e -> new ImageUploader(operacion) {
         @Override
         public void onClose() {
             if(!operacion.getPathImagenes().isEmpty())

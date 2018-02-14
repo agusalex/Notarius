@@ -141,10 +141,8 @@ public final class DashboardMenu extends CustomComponent {
                 menuItemComponent = buildBadgeWrapper(menuItemComponent,
                         notificationsBadge);
             }
-
-
-
-            menuItemsLayout.addComponent(menuItemComponent);
+            if(!view.equals(DashboardViewType.UPLOADER)) //Uploader only for mobile so usesless on menu
+                menuItemsLayout.addComponent(menuItemComponent);
         }
         return menuItemsLayout;
 
