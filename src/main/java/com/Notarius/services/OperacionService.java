@@ -11,6 +11,9 @@ import com.vaadin.server.StreamResource;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** Separate Java service class.
  * Backend implementation for the address book application, with "detached entities"
@@ -77,8 +80,57 @@ public class OperacionService {
             }
         }
 
+    public synchronized List<Operacion> findAllIniciadas(String stringFilter) {
+        ArrayList<Operacion> ret = new ArrayList<>();
+        DAO<Operacion> dao=new DAOImpl<Operacion>(Operacion.class);
+        ArrayList<Operacion> daoRead=( ArrayList<Operacion>)dao.readAll();
+       List<Operacion> stream=daoRead.stream().filter(new Predicate<Operacion>() {
+            @Override
+            public boolean test(Operacion operacion) {
+                return operacion.getEstado().equals(Operacion.Estado.Iniciada);
+            }
+        }).collect(Collectors.toList());
 
 
+        ArrayList<Operacion> Operacions=new ArrayList<Operacion>(stream);
+
+
+        for (int i = 0; i <Operacions.size() ; i++) {
+            Operacion operacion=Operacions.get(i);
+
+            boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
+                    || operacion.toString().toLowerCase()
+                    .contains(stringFilter.toLowerCase());
+            if (passesFilter)
+                if(!operacion.isBorrado())
+                    ret.add(operacion);
+
+
+
+
+
+        }
+
+        if(stringFilter!=null&&!stringFilter.equals(""))
+            Utils.Search(Operacions,stringFilter).forEach(
+                    operacion -> {
+                        if(!operacion.isBorrado()) {
+                            if(!ret.contains(operacion)) {
+                                ret.add(operacion);
+                            }
+                        }
+                    });
+
+
+        Collections.sort(ret, new Comparator<Operacion>() {
+
+            @Override
+            public int compare(Operacion o1, Operacion o2) {
+                return (int) (o2.getCarpeta() - o1.getCarpeta());
+            }
+        });
+        return ret;
+    }
 
     public synchronized List<Operacion> findAll(String stringFilter) {
         ArrayList<Operacion> ret = new ArrayList<>();
