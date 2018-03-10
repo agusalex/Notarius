@@ -105,9 +105,10 @@ public abstract class ImageUploader extends Window {
     public abstract void onClose();
 
     private boolean isImage(String filename){
+
     	String [] imageExtensions= new String[]{".jpg",".png",".gif",".jpeg",".bmp",".raw",".tif"};
 		for (String extension:imageExtensions)
-			if(filename.contains(extension))
+			if(filename.toLowerCase().contains(extension))
 			return true;
 
     	return false;
@@ -116,7 +117,7 @@ public abstract class ImageUploader extends Window {
 		String [] imageExtensions= new String[]{".doc",".pdf",".prw",".xls",".odt","ods","txt","rtf"};
 
 		for (String extension:imageExtensions)
-			if(filename.contains(extension))
+			if(filename.toLowerCase().contains(extension))
 				return true;
 
 		return false;
