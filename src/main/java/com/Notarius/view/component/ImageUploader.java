@@ -48,7 +48,7 @@ public abstract class ImageUploader extends Window {
 		    primera));
 
 	} else {
-	    preview.setSource(new ThemeResource("sinPortada.png"));
+		System.out.println("Sin Archivos");
 	}
 	resize();
 

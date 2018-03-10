@@ -38,14 +38,24 @@ public class OperacionForm extends FormLayout {
     private Button imageManager = new Button("Adjuntos", e -> new ImageUploader(operacion) {
         @Override
         public void onClose() {
-            if(!operacion.getPathImagenes().isEmpty())
-                if(operacion.getEstado().equals(Operacion.Estado.Iniciada)) {
+            System.out.print("Archivos: ");
+           operacion.getPathImagenes().forEach(System.out::println);
+            if(!operacion.getPathImagenes().isEmpty()) {
+                if (operacion.getEstado().equals(Operacion.Estado.Iniciada)) {
                     operacion.setEstado(Operacion.Estado.Inscripta);
                     estado.setSelectedItem(Operacion.Estado.Inscripta);
+                    imageManager.setIcon(VaadinIcons.CLIPBOARD_CHECK);
                 }
+            }
+            else{
+                    System.out.println("Vacio");
+                    imageManager.setIcon(VaadinIcons.PAPERCLIP);
+                }
+
 
         }
     });
+
     // Easily binding forms to beans and manage validation and buffering
 
 
@@ -140,7 +150,11 @@ public class OperacionForm extends FormLayout {
 
     public void setOperacion(Operacion Operacion) {
 
-
+        if(Operacion.getPathImagenes().isEmpty())
+            imageManager.setIcon(VaadinIcons.PAPERCLIP);
+        else{
+            imageManager.setIcon(VaadinIcons.CLIPBOARD_CHECK);
+        }
         this.operacion = Operacion;
         binderOperacion.readBean(Operacion);
 
