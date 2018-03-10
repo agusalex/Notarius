@@ -48,7 +48,6 @@ public abstract class ImageUploader extends Window {
 		    primera));
 
 	} else {
-	    System.out.println("SIn imagenes");
 	    preview.setSource(new ThemeResource("sinPortada.png"));
 	}
 	resize();
@@ -83,7 +82,11 @@ public abstract class ImageUploader extends Window {
 		    Resource res = OperacionService.GenerarStreamResource(first);
 			System.out.println(first);
 		    downloadButton.setArchivoFromPath("Files"+File.separator,first);
-		    preview.setSource(res);
+		   	if(isImage(first)){
+		    	preview.setSource(res);}
+			else{
+		   		preview.setSource(null);
+			}
 
 		}
 		resize();
@@ -101,6 +104,24 @@ public abstract class ImageUploader extends Window {
 
     public abstract void onClose();
 
+    private boolean isImage(String filename){
+    	String [] imageExtensions= new String[]{".jpg",".png",".gif",".jpeg",".bmp",".raw",".tif"};
+		for (String extension:imageExtensions)
+			if(filename.contains(extension))
+			return true;
+
+    	return false;
+	}
+	private boolean isDoc(String filename){
+		String [] imageExtensions= new String[]{".doc",".pdf",".pwr",".xls",".odt","ods","txt","rtf"};
+
+		for (String extension:imageExtensions)
+			if(filename.contains(extension))
+				return true;
+
+		return false;
+	}
+
     private void configureComponents() {
 
 		upload.addStartedListener(new Upload.StartedListener() {
@@ -108,17 +129,12 @@ public abstract class ImageUploader extends Window {
 			public void uploadStarted(Upload.StartedEvent event) {
 				// TODO Auto-generated method stub
 
-				if(!(event.getFilename().contains(".jpg")||
-						event.getFilename().contains(".png")||
-						event.getFilename().contains(".gif")||
-						event.getFilename().contains(".jpeg")||
-						event.getFilename().contains(".bmp")||
-						event.getFilename().contains(".raw")||
-						event.getFilename().contains(".tif"))){
-
-					Notification.show("Error", "Tipo de archivo invalido", Notification.Type.ERROR_MESSAGE);
-					upload.interruptUpload();
+				if (isImage(event.getFilename()) || isDoc(event.getFilename())) {
+					return;
 				}
+
+				Notification.show("Error", "Tipo de archivo invalido", Notification.Type.ERROR_MESSAGE);
+				upload.interruptUpload();
 			}
 	});
 	upload.addSucceededListener(success -> {
@@ -207,8 +223,8 @@ public abstract class ImageUploader extends Window {
 
     private Component buildProfileTab() {
 	HorizontalLayout profile = new HorizontalLayout();
-	profile.setCaption("Imagenes");
-	profile.setIcon(VaadinIcons.CAMERA);
+	profile.setCaption("Adjuntos");
+	profile.setIcon(VaadinIcons.PAPERCLIP);
 	// root.setHeight(500.0f, Unit.PERCENTAGE);
 	// root.setMargin(true);
 	return profile;

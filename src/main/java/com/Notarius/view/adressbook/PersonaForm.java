@@ -80,10 +80,7 @@ public class PersonaForm extends FormLayout {
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
         setVisible(false);
-
-
-
-
+        fechaDeNac.setDateFormat("dd/MM/yyyy");
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);

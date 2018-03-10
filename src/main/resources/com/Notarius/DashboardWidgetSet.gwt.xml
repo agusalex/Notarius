@@ -36,5 +36,5 @@
 
     <inherits name="org.vaadin.tinymceeditor.widgetset.TinymceeditorWidgetset" />
 
-    <inherits name="com.vaadin.terminal.gwt.DefaultWidgetSet" />
+    
 </module>
