@@ -113,7 +113,8 @@ public abstract class ImageUploader extends Window {
     	return false;
 	}
 	private boolean isDoc(String filename){
-		String [] imageExtensions= new String[]{".doc",".pdf",".pwr",".xls",".odt","ods","txt","rtf"};
+
+		String [] imageExtensions= new String[]{".doc",".pdf",".prw",".xls",".odt","ods","txt","rtf"};
 
 		for (String extension:imageExtensions)
 			if(filename.contains(extension))
