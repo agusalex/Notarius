@@ -11,8 +11,8 @@ import org.hibernate.service.ServiceRegistry;
 public class ConexionHibernate {
 	private static Configuration configuration = new Configuration();
 	private static SessionFactory sf=null;
-	//to set db for development or deployment
 	static boolean  debugDB=false;
+	
 	
 	private static Configuration getConfiguration() {
 		//TODO ver como inyectar esos annotated class o esta seria la forma correcta?

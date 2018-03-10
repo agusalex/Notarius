@@ -35,7 +35,7 @@ public class OperacionForm extends FormLayout {
     private OperacionABMView addressbookView;
     private Binder<Operacion> binderOperacion = new Binder<>(Operacion.class);
     TabSheet tabSheet;
-    private Button imageManager = new Button("Imagenes", e -> new ImageUploader(operacion) {
+    private Button imageManager = new Button("Adjuntos", e -> new ImageUploader(operacion) {
         @Override
         public void onClose() {
             if(!operacion.getPathImagenes().isEmpty())
@@ -125,7 +125,7 @@ public class OperacionForm extends FormLayout {
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         tabSheet.addTab(principal,"Principal");
 
-        imageManager.setIcon(VaadinIcons.CAMERA);
+        imageManager.setIcon(VaadinIcons.PAPERCLIP);
         addComponent(tabSheet);
         //HorizontalLayout actions = new HorizontalLayout(save,test,delete);
         HorizontalLayout actions = new HorizontalLayout(save,delete,imageManager);

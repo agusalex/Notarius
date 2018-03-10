@@ -1,3 +1,4 @@
+Sistema Notarius
 call CSVWRITE ( 'C:/MyFolder/11-7-17.txt', 'SELECT * FROM OPERACION' ) 
 
 SELECT * FROM PERSONAS insert into PERSONAS select * from 

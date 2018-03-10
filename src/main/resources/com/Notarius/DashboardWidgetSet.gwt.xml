@@ -33,4 +33,8 @@
     <inherits name="org.tepi.imageviewer.WidgetSet" />
 
     <inherits name="org.vaadin.addon.calendar.WidgetSet" />
+
+    <inherits name="org.vaadin.tinymceeditor.widgetset.TinymceeditorWidgetset" />
+
+    
 </module>
