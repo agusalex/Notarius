@@ -11,6 +11,7 @@ import com.vaadin.server.StreamResource;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -79,6 +80,8 @@ public class OperacionService {
                 e.printStackTrace ( );
             }
         }
+
+
 
     public synchronized List<Operacion> findAllIniciadas(String stringFilter) {
         ArrayList<Operacion> ret = new ArrayList<>();

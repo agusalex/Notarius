@@ -45,10 +45,11 @@ public class Operacion implements Serializable,Identificable{
 
 
     public void removePathImagen(String path) {
-        for (String candidate: pathImagenes
-             ) {
-            if(path.equals(candidate))
-                pathImagenes.remove(candidate);
+
+        Object [] archivos = pathImagenes.toArray();
+
+        for (int i = 0; i < archivos.length ; i++) {
+            pathImagenes.remove(path);
         }
 
     }

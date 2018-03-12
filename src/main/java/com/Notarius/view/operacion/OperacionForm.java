@@ -39,16 +39,18 @@ public class OperacionForm extends FormLayout {
         @Override
         public void onClose() {
             System.out.print("Archivos: ");
-           operacion.getPathImagenes().forEach(System.out::println);
+
             if(!operacion.getPathImagenes().isEmpty()) {
+                operacion.getPathImagenes().forEach(System.out::println);
+                imageManager.setIcon(VaadinIcons.CLIPBOARD_CHECK);
                 if (operacion.getEstado().equals(Operacion.Estado.Iniciada)) {
                     operacion.setEstado(Operacion.Estado.Inscripta);
                     estado.setSelectedItem(Operacion.Estado.Inscripta);
-                    imageManager.setIcon(VaadinIcons.CLIPBOARD_CHECK);
+
                 }
             }
             else{
-                    System.out.println("Vacio");
+                    System.out.println("Sin Archivos");
                     imageManager.setIcon(VaadinIcons.PAPERCLIP);
                 }
 
@@ -234,6 +236,10 @@ public class OperacionForm extends FormLayout {
     }
 
     public void cancel() {
+        if(binderOperacion.hasChanges()){
+            if(operacion.getId()!=null)
+                getAddressbookView().showErrorNotification("Cambios Descartados!");
+        }
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);

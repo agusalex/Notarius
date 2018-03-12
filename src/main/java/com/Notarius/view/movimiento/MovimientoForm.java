@@ -263,6 +263,10 @@ public class MovimientoForm extends FormLayout {
     }
 
     public void cancel() {
+        if(binderMovimiento.hasChanges()){
+            if(movimiento.getId()!=null)
+                getAddressbookView().showErrorNotification("Cambios Descartados!");
+        }
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);

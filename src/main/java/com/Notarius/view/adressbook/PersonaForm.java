@@ -246,6 +246,10 @@ public class PersonaForm extends FormLayout {
     }
 
     public void cancel() {
+        if(binderPersona.hasChanges()){
+            if(persona.getId()!=null)
+                getAddressbookView().showErrorNotification("Cambios Descartados!");
+        }
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
