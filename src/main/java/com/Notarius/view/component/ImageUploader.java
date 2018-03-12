@@ -12,6 +12,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Set;
 
 public abstract class ImageUploader extends Window {
@@ -21,6 +22,7 @@ public abstract class ImageUploader extends Window {
     DeleteButton delete = new DeleteButton("",
 	    VaadinIcons.WARNING, "Eliminar", "20%", e -> delete());
     Button done=new Button("Ok");
+    String lastUploaded = "";
     ListSelect<String> select = new ListSelect<>(null);
     private Image preview = new Image(null);
     private Component profiletab;
@@ -43,12 +45,22 @@ public abstract class ImageUploader extends Window {
     private void refreshListSelect() {
 	select.setItems(operacion.getPathImagenes());
 	if (operacion.getPathImagenes().iterator().hasNext()) {
-	    String primera = operacion.getPathImagenes().iterator().next();
-	    preview.setSource(OperacionService.GenerarStreamResource(
-		    primera));
+		String selected ;
+		if(!lastUploaded.equals(""))
+			{
+			selected = lastUploaded;
+			lastUploaded = "";
+		}
+		else
+			 selected = operacion.getPathImagenes().iterator().next();
+
+		preview.setSource(OperacionService.GenerarStreamResource(
+				selected));
+		select.select(selected);
 
 	} else {
-	    preview.setSource(new ThemeResource("sinPortada.png"));
+		preview.setSource(null);
+		System.out.println("Sin Archivos");
 	}
 	resize();
 
@@ -57,11 +69,14 @@ public abstract class ImageUploader extends Window {
 
 
     private void delete() {
-	for (String path : select.getSelectedItems()) {
-	    operacion.removePathImagen(path);
-	}
+    	Object [] selected = select.getSelectedItems().toArray();
 
-	refreshListSelect();
+		for (int i = 0; i < selected.length ; i++) {
+			operacion.removePathImagen((String)selected[i]);
+		}
+
+
+		refreshListSelect();
     }
 
     public ImageUploader(Operacion operacion) {
@@ -142,6 +157,7 @@ public abstract class ImageUploader extends Window {
 	upload.addSucceededListener(success -> {
 	    if (uploadReciever.getFileName() != null && uploadReciever.getFileName() != "") {
 		operacion.addPathImagen(uploadReciever.getFileName() + uploadReciever.getFileExtension());
+		lastUploaded = uploadReciever.getFileName() + uploadReciever.getFileExtension();
 		refreshListSelect();
 	    }
 	});

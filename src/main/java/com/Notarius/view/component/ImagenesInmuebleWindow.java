@@ -49,7 +49,7 @@ public abstract class ImagenesInmuebleWindow extends Window {
 
 	} else {
 	    System.out.println("SIn imagenes");
-	    preview.setSource(new ThemeResource("sinPortada.png"));
+
 	}
 	resize();
 
