@@ -11,11 +11,16 @@ import org.hibernate.service.ServiceRegistry;
 public class ConexionHibernate {
 	private static Configuration configuration = new Configuration();
 	private static SessionFactory sf=null;
-	static boolean  debugDB=true;
+	static boolean  debugDB=false;
 	
 	
 	private static Configuration getConfiguration() {
 		//TODO ver como inyectar esos annotated class o esta seria la forma correcta?
+
+		if(System.getProperty("os.name").contains("Windows")) {
+			System.out.println("Debug DB");
+			debugDB = true;
+		}
 
        configuration
 
