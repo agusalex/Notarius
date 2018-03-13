@@ -17,6 +17,11 @@ public class ConexionHibernate {
 	private static Configuration getConfiguration() {
 		//TODO ver como inyectar esos annotated class o esta seria la forma correcta?
 
+		if(System.getProperty("os.name").contains("Windows")) {
+			System.out.println("Debug DB");
+			debugDB = true;
+		}
+
        configuration
 
 		 		.configure()
