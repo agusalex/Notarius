@@ -11,7 +11,7 @@ import org.hibernate.service.ServiceRegistry;
 public class ConexionHibernate {
 	private static Configuration configuration = new Configuration();
 	private static SessionFactory sf=null;
-	static boolean  debugDB=true;
+	static boolean  debugDB=false;
 	
 	
 	private static Configuration getConfiguration() {
