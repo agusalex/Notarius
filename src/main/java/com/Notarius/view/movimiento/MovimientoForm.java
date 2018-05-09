@@ -50,6 +50,7 @@ public class MovimientoForm extends FormLayout {
     private ComboBox<TipoMovimiento> tipo = new ComboBox<>("Tipo",TipoMovimiento.toList());
     private ComboBox<ClaseMovimiento> clase = new ComboBox<>("Clase",ClaseMovimiento.toList());
     private DateField fecha = new DateField("Fecha");
+    private TextField usuario = new TextField("Usuario");
 
     private DeleteButton delete = new DeleteButton("Eliminar",
             VaadinIcons.WARNING, "Eliminar", "20%", new Button.ClickListener() {
@@ -124,7 +125,9 @@ public class MovimientoForm extends FormLayout {
                     );
                 });
         binderMovimiento.forField(moneda).asRequired("Seleccione una moneda").bind(Movimiento::getTipoMoneda,Movimiento::setTipoMoneda);
+        binderMovimiento.forField(usuario).asRequired("Ingrese un Usuario").bind(Movimiento::getUsername,Movimiento::setUsername);
         moneda.setEmptySelectionAllowed(false);
+
 
     /*    binderMovimiento.forField(monto).withNullRepresentation("").
                 asRequired("Ingrese Una Carpeta")
@@ -162,7 +165,7 @@ public class MovimientoForm extends FormLayout {
 
      /*   contratos.addClickListener(e ->
                 new MovimientoFormWindow(new movimiento()));*/
-        FormLayout principal=new FormLayout(tipo,monto,moneda,clase ,fecha,descripcion);
+        FormLayout principal=new FormLayout(tipo,monto,moneda,clase ,usuario,fecha,descripcion);
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         tabSheet.addTab(principal,"Principal");
 

@@ -106,7 +106,7 @@ public class MovimientoABMView extends DefaultLayout implements View {
 
 
 
-        grid.setColumns("tipoMovimiento", "monto", "tipoMoneda","claseMovimiento","descripcionMovimiento");
+        grid.setColumns("monto", "tipoMoneda","claseMovimiento","username","fecha","descripcionMovimiento");
 
 
        /* grid.setStyleGenerator(movimiento -> {
