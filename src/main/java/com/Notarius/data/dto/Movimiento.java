@@ -129,12 +129,20 @@ public class Movimiento implements Identificable{
 		this.descripcionMovimiento = descripcionMovimiento;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public BigDecimal getMonto() {
-		return monto;
+		return this.tipoMovimiento.equals(TipoMovimiento.Egreso)?monto.multiply(new BigDecimal(-1)):monto;
 	}
 
 	public void setMonto(BigDecimal monto) {
-		this.monto = monto;
+		this.monto = monto.abs();
 	}
 
 	public Date getFecha() {
