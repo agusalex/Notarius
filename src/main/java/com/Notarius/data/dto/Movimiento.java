@@ -137,7 +137,7 @@ public class Movimiento implements Identificable{
 		this.username = username;
 	}
 
-	public BigDecimal getMonto() {
+public BigDecimal getMonto() {
 		if(monto.equals(new BigDecimal(0)))
 			return monto;
 
