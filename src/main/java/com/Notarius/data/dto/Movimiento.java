@@ -28,7 +28,7 @@ public class Movimiento implements Identificable{
 	private String descripcionMovimiento;
 
 	@Column(name = "monto")
-	private BigDecimal monto;
+	private BigDecimal monto = new BigDecimal("0");
 
 	@Column(name = "fecha")
 	private Date fecha;
@@ -138,6 +138,10 @@ public class Movimiento implements Identificable{
 	}
 
 	public BigDecimal getMonto() {
+		if(monto.equals(new BigDecimal(0)))
+			return monto;
+
+
 		return this.tipoMovimiento.equals(TipoMovimiento.Egreso)?monto.multiply(new BigDecimal(-1)):monto;
 	}
 
