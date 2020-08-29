@@ -22,3 +22,10 @@ jobs:
         java-version: 1.8
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: Uploading Artifact
+      run: mkdir staging && cp target/*.war staging
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Package
+        path: staging
+
