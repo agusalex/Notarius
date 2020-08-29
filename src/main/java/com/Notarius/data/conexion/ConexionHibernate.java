@@ -29,7 +29,7 @@ public class ConexionHibernate {
 				.setProperty(Environment.DRIVER, "org.mariadb.jdbc.Driver")
 				.setProperty(Environment.URL, "jdbc:mariadb://192.168.1.10:3306/Notarius")
 				.setProperty(Environment.USER, "root")
-				.setProperty(Environment.PASS, "")
+				.setProperty(Environment.PASS, "root")
 				.setProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS, "false");
 
        if(debugDB){
