@@ -11,7 +11,7 @@ import org.hibernate.service.ServiceRegistry;
 public class ConexionHibernate {
 	private static Configuration configuration = new Configuration();
 	private static SessionFactory sf=null;
-	static boolean  debugDB=false;
+	static boolean  debugDB=true;
 	
 	
 	private static Configuration getConfiguration() {
@@ -29,7 +29,7 @@ public class ConexionHibernate {
 				.setProperty(Environment.DRIVER, "org.mariadb.jdbc.Driver")
 				.setProperty(Environment.URL, "jdbc:mariadb://192.168.1.10:3306/Notarius")
 				.setProperty(Environment.USER, "root")
-				.setProperty(Environment.PASS, "")
+				.setProperty(Environment.PASS, "root")
 				.setProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS, "false");
 
        if(debugDB){

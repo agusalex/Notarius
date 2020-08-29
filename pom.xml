@@ -176,7 +176,7 @@
 			<dependency>
 				<groupId>com.mchange</groupId>
 				<artifactId>c3p0</artifactId>
-				<version>0.9.5.2</version>
+				<version>0.9.5.3</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
@@ -189,7 +189,7 @@
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
-				<version>5.1.39</version>
+				<version>8.0.16</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
 			<dependency>
@@ -201,12 +201,12 @@
 			<dependency>
 				<groupId>org.apache.tika</groupId>
 				<artifactId>tika-core</artifactId>
-				<version>1.16</version>
+				<version>1.22</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>22.0</version>
+				<version>24.1.1-jre</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
@@ -257,14 +257,14 @@
 			<dependency>
 				<groupId>commons-beanutils</groupId>
 				<artifactId>commons-beanutils</artifactId>
-				<version>1.9.0</version>
+				<version>1.9.4</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/commons-collections/commons-collections -->
 			<dependency>
 				<groupId>commons-collections</groupId>
 				<artifactId>commons-collections</artifactId>
-				<version>3.2.1</version>
+				<version>3.2.2</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/commons-digester/commons-digester -->

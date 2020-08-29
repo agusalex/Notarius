@@ -170,21 +170,5 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 		return null;
 	}
 
-	public static void main(String[] args) {
-		DAOImpl<Persona> dao = new DAOImpl<>(Persona.class);
-		System.out.println(dao.getClaseEntidad().getSimpleName());
-		Persona p = new Persona();
-
-
-		dao.create(p);
-
-		dao.readAll().forEach(System.out::println);
-		dao.delete(p);
-
-		p.setFirstName("Nombre Modificado");
-		dao.update(p);
-		dao.readAll().forEach(System.out::println);
-		ConexionHibernate.close();
-	}
 
 }
