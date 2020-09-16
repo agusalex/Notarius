@@ -1,6 +1,11 @@
 #
 #  Notarius - Clients and Operations CRUD with Levenshtein distance search
-![https://hub.docker.com/repository/docker/agusalex/notarius](https://img.shields.io/badge/Docker-build-green)
+
+
+[![Docker Hub package][dockerhub-badge]][dockerhub-link]
+
+[dockerhub-badge]: https://img.shields.io/badge/images%20on-Docker%20Hub-blue.svg
+[dockerhub-link]: https://hub.docker.com/repository/docker/agusalex/notarius "Docker Hub Image"
 
 Using **Levenshtein distance** prediction algorithm for the search bar.
 **Vaadin** as the frontend/backend and **H2** for database (can also use MySQL/MariaDB see docker params in Docker Hub)
