@@ -1,8 +1,9 @@
 #
 #  Notarius - Clients and Operations CRUD with Levenshtein distance search
 
-
+![Master Branch](https://github.com/agusalex/Notarius/workflows/Master%20Branch/badge.svg)
 [![Docker Hub package][dockerhub-badge]][dockerhub-link]
+![example workflow name](https://github.com/actions/hello-world/workflows/Greet%20Everyone/badge.svg)
 
 [dockerhub-badge]: https://img.shields.io/badge/images%20on-Docker%20Hub-blue.svg
 [dockerhub-link]: https://hub.docker.com/repository/docker/agusalex/notarius "Docker Hub Image"
