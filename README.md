@@ -1,14 +1,15 @@
-#
 #  Notarius - Clients and Operations CRUD with Levenshtein distance search
 
-![Master Branch](https://github.com/agusalex/Notarius/workflows/Master%20Branch/badge.svg)
+[![Master Branch][github-badge]][github-link]
 [![Docker Hub package][dockerhub-badge]][dockerhub-link]
 
+[github-badge]: https://github.com/agusalex/Notarius/workflows/Master%20Branch/badge.svg
 [dockerhub-badge]: https://img.shields.io/badge/images%20on-Docker%20Hub-blue.svg
 [dockerhub-link]: https://hub.docker.com/repository/docker/agusalex/notarius "Docker Hub Image"
+[github-link]: https://github.com/agusalex/Notarius "Github"
 
 Using **Levenshtein distance** prediction algorithm for the search bar.
-**Vaadin** as the frontend/backend and **H2** for database (can also use MySQL/MariaDB see docker params in Docker Hub)
+**Vaadin** as the frontend/backend and **H2** for database (can also use MySQL/MariaDB see Parameters section )
 # Running the project:
 You'll need **Docker** installed
 
@@ -24,7 +25,14 @@ You'll need **Docker** and **Maven** installed
     docker run -e DEBUG=true -p 8080:8080/tcp notarius
    
   
-
+# Container Parameters
+| Parameter |Value  | Example|
+|--|--|--|
+|DEBUG| If this is SET it uses internal H2 DB  | true |
+|URL| The URL of the external DB (if DEBUG = FALSE)  | 127.0.0.1:3306 |
+|URL| The URL of the external DB (if DEBUG = FALSE) | 127.0.0.1:3306 |
+|USER| The USER of the external DB (if DEBUG = FALSE) | root |
+|PASS| The PASSWORD of the external DB (if DEBUG = FALSE) | root |
 
 # Exporting DB:
 
