@@ -1,5 +1,5 @@
 #  Notarius - Clients and Operations CRUD with Levenshtein distance search
-
+.
 [![Docker Hub package][dockerhub-badge]][dockerhub-link]
 
 [dockerhub-badge]: https://img.shields.io/badge/images%20on-Docker%20Hub-blue.svg
